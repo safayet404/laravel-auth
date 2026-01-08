@@ -1,9 +1,8 @@
-<script setup lang="ts">
+<script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/vue3';
 
-const breadcrumbs: BreadcrumbItem[] = [
+const breadcrumbs = [
     {
         title: 'Users',
         href: '/users',
@@ -61,11 +60,12 @@ defineProps({
                             {{ user.email }}
                         </td>
                         <td class="px-6 py-2">
-                            <button
+                            <Link
+                                :href="`/users/${user.id}/edit`"
                                 class="bg-blue cursor-pointer px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
                             >
                                 Edit
-                            </button>
+                            </Link>
                             <button
                                 class="bg-blue cursor-pointer px-3 py-2 text-xs font-medium text-white dark:bg-red-700"
                             >

@@ -56,7 +56,9 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render("Users/Edit",[
+            "user" => User::find($id)
+        ]);
     }
 
     /**
@@ -64,7 +66,24 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+          $request->validate([
+        'name' => 'required',
+        'email' => 'required',
+      ]);
+
+      $user = User::find($id);
+      $user->name = $request->name;
+      $user->email = $request->email;
+
+      if($request->password)
+      {
+        $user->password = Hash::make($request->password);
+      }
+
+      $user->save();
+
+
+      return to_route("users.index");
     }
 
     /**
