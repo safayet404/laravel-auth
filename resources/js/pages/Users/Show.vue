@@ -4,8 +4,8 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const breadcrumbs = [
     {
-        title: 'User Edit',
-        href: '/edit',
+        title: 'User Show',
+        href: '/show',
     },
 ];
 
@@ -21,7 +21,7 @@ const form = useForm({
 </script>
 
 <template>
-    <Head title="User Edit" />
+    <Head title="User Show" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto p-3">

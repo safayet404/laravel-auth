@@ -21,7 +21,7 @@ defineProps({
         <div class="overflow-x-auto p-3">
             <Link
                 href="/users/create"
-                class="bg-blue cursor-pointer px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
+                class="mt-5 cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
             >
                 Create
             </Link>
@@ -62,12 +62,18 @@ defineProps({
                         <td class="px-6 py-2">
                             <Link
                                 :href="`/users/${user.id}/edit`"
-                                class="bg-blue cursor-pointer px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
+                                class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-blue-700 dark:text-white"
+                            >
+                                Show
+                            </Link>
+                            <Link
+                                :href="`/users/${user.id}/edit`"
+                                class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
                             >
                                 Edit
                             </Link>
                             <button
-                                class="bg-blue cursor-pointer px-3 py-2 text-xs font-medium text-white dark:bg-red-700"
+                                class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-red-700"
                             >
                                 Delete
                             </button>
