@@ -23,7 +23,7 @@ const form = useForm({
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto p-3">
             <Link
-                href="/users/index"
+                href="/users"
                 class="bg-blue cursor-pointer px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
             >
                 Back

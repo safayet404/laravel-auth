@@ -101,13 +101,6 @@ const form = useForm({
                         {{ form.errors.password }}
                     </p>
                 </div>
-
-                <button
-                    type="submit"
-                    class="rounded-md bg-green-600 px-4 py-2 font-medium text-white hover:bg-green-700"
-                >
-                    Submit
-                </button>
             </form>
         </div>
     </AppLayout>

@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 
 const breadcrumbs = [
     {
@@ -12,6 +12,12 @@ const breadcrumbs = [
 defineProps({
     users: Array,
 });
+
+function deleteUser(id) {
+    if (confirm('Are you sure want to delete this user?')) {
+        router.delete(`/users/${id}`);
+    }
+}
 </script>
 
 <template>
@@ -61,7 +67,7 @@ defineProps({
                         </td>
                         <td class="px-6 py-2">
                             <Link
-                                :href="`/users/${user.id}/edit`"
+                                :href="`/users/${user.id}/show`"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-blue-700 dark:text-white"
                             >
                                 Show
@@ -73,6 +79,7 @@ defineProps({
                                 Edit
                             </Link>
                             <button
+                                @click="deleteUser(user.id)"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-red-700"
                             >
                                 Delete
