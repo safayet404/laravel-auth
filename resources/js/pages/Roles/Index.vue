@@ -22,7 +22,7 @@ function deleteRole(id) {
 </script>
 
 <template>
-    <Head title="Role Create" />
+    <Head title="Roles Create" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto p-3">
