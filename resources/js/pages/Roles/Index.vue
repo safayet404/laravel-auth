@@ -26,7 +26,7 @@ function deleteUser(id) {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto p-3">
             <Link
-                href="/roles/index"
+                href="/roles/create"
                 class="mt-5 cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
             >
                 Create
@@ -63,23 +63,28 @@ function deleteUser(id) {
                         <td
                             class="text-gray px-6 py-2 font-medium dark:text-white"
                         >
-                            {{ role.email }}
+                            <span
+                                class="mr-1 bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
+                                v-for="p in role.permissions"
+                            >
+                                {{ p.name }}
+                            </span>
                         </td>
                         <td class="px-6 py-2">
                             <Link
-                                :href="`/users/${user.id}/show`"
+                                :href="`/users/${role.id}/show`"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-blue-700 dark:text-white"
                             >
                                 Show
                             </Link>
                             <Link
-                                :href="`/roles/${user.id}/edit`"
+                                :href="`/roles/${role.id}/edit`"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
                             >
                                 Edit
                             </Link>
                             <button
-                                @click="deleteUser(user.id)"
+                                @click="deleteUser(role.id)"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-red-700"
                             >
                                 Delete
