@@ -52,7 +52,15 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $role = Role::find($id);
+
+        return Inertia::render("Roles/Show",[
+            "role" => $role,
+             "rolePermissions" => $role->permissions()->pluck("name")->all(),
+        ]);
+
+
+
     }
 
     /**
