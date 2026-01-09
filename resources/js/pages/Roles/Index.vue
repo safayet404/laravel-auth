@@ -1,5 +1,6 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
+import { can } from '@/lib/can';
 import { Head, Link, router } from '@inertiajs/vue3';
 
 const breadcrumbs = [
@@ -26,6 +27,7 @@ function deleteRole(id) {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto p-3">
             <Link
+                v-if="can('roles.create')"
                 href="/roles/create"
                 class="mt-5 cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
             >
@@ -78,12 +80,14 @@ function deleteRole(id) {
                                 Show
                             </Link>
                             <Link
+                                v-if="can('roles.edit')"
                                 :href="`/roles/${role.id}/edit`"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
                             >
                                 Edit
                             </Link>
                             <button
+                                v-if="can('roles.delete')"
                                 @click="deleteRole(role.id)"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-red-700"
                             >
