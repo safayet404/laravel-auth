@@ -79,10 +79,10 @@ defineProps({
                         >
                     </label>
                     <p
-                        v-if="form.errors.name"
+                        v-if="form.errors.permissions"
                         class="mt-1 text-sm text-red-600"
                     >
-                        {{ form.errors.name }}
+                        {{ form.errors.permissions }}
                     </p>
                 </div>
 

@@ -11,12 +11,15 @@ const breadcrumbs = [
 
 const props = defineProps({
     user: Object,
+    userRoles: Array,
+    roles: Array,
 });
 
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
     password: props.user.password,
+    roles: props.userRoles || [],
 });
 </script>
 
@@ -99,6 +102,35 @@ const form = useForm({
                         class="mt-1 text-sm text-red-600"
                     >
                         {{ form.errors.password }}
+                    </p>
+                </div>
+
+                <div class="grid gap-2">
+                    <label
+                        for="permissions"
+                        class="select-one text-sm leading-none font-medium"
+                    >
+                    </label>
+                    <label
+                        v-for="role in roles"
+                        class="flex items-center space-x-2"
+                    >
+                        <input
+                            v-model="form.roles"
+                            :value="role"
+                            type="checkbox"
+                            class="form-checkbox h-5 w-5 rounded text-blue-600 focus:ring-2 focus:ring-blue-600"
+                        />
+                        <span
+                            class="text-gray-800 capitalize dark:text-white"
+                            >{{ role }}</span
+                        >
+                    </label>
+                    <p
+                        v-if="form.errors.roles"
+                        class="mt-1 text-sm text-red-600"
+                    >
+                        {{ form.errors.roles }}
                     </p>
                 </div>
 

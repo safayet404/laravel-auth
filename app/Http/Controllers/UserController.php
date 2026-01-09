@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
+
 
 class UserController extends Controller
 {
@@ -14,8 +16,10 @@ class UserController extends Controller
      */
     public function index()
     {
+      $user = User::with("roles")->get();
         return Inertia::render("Users/Index",[
-            "users" => User::all()
+            "users" => $user,
+
         ]);
     }
 
@@ -24,7 +28,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render("Users/Create");
+        return Inertia::render("Users/Create",[
+          "roles" => Role::pluck('name')->all()
+
+        ]);
     }
 
     /**
@@ -32,13 +39,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
       $request->validate([
         'name' => 'required',
         'email' => 'required',
         'password' => 'required'
       ]);
 
-      User::create($request->only(['name','email'])  + ["password" => Hash::make($request->password) ] );
+      $user = User::create($request->only(['name','email'])  + ["password" => Hash::make($request->password) ] );
+
+      $user->syncRoles($request->roles);
+
 
       return to_route("users.index");
     }
@@ -57,9 +68,14 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
+
     {
+      $user = User::find($id);
         return Inertia::render("Users/Edit",[
-            "user" => User::find($id)
+            "user" => $user,
+            "roles" => Role::pluck('name')->all(),
+            "userRoles" => $user->roles()->pluck("name")->all()
+
         ]);
     }
 
@@ -83,6 +99,8 @@ class UserController extends Controller
       }
 
       $user->save();
+      $user->syncRoles($request->roles);
+
 
 
       return to_route("users.index");

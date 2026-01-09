@@ -100,6 +100,8 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Role::destroy($id);
+
+        return to_route('roles.index');
     }
 }

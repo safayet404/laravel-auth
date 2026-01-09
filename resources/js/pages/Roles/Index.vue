@@ -13,9 +13,9 @@ defineProps({
     roles: Array,
 });
 
-function deleteUser(id) {
-    if (confirm('Are you sure want to delete this user?')) {
-        router.delete(`/users/${id}`);
+function deleteRole(id) {
+    if (confirm('Are you sure want to delete this role?')) {
+        router.delete(`/roles/${id}`);
     }
 }
 </script>
@@ -84,7 +84,7 @@ function deleteUser(id) {
                                 Edit
                             </Link>
                             <button
-                                @click="deleteUser(role.id)"
+                                @click="deleteRole(role.id)"
                                 class="bg-blue mr-2 cursor-pointer rounded-2xl px-3 py-2 text-xs font-medium text-white dark:bg-red-700"
                             >
                                 Delete
