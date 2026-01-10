@@ -18,7 +18,7 @@ Route::get('dashboard', function () {
 
 Route::resource("users",UserController::class)->only(['create','store'])->middleware("permission:users.create");
 
-Route::resource("users",UserController::class)->only(['edit','update'])->middleware("permission:users.update");
+Route::resource("users",UserController::class)->only(['edit','update'])->middleware("permission:users.edit");
 
 Route::resource("users",UserController::class)->only(['destroy'])->middleware("permission:users.delete");
 
@@ -29,7 +29,7 @@ Route::resource("users",UserController::class)->only(['index','show'])->middlewa
 
 Route::resource("roles",RoleController::class)->only(['create','store'])->middleware("permission:roles.create");
 
-Route::resource("roles",RoleController::class)->only(['edit','update'])->middleware("permission:roles.update");
+Route::resource("roles",RoleController::class)->only(['edit','update'])->middleware("permission:roles.edit");
 
 Route::resource("roles",RoleController::class)->only(['destroy'])->middleware("permission:roles.delete");
 

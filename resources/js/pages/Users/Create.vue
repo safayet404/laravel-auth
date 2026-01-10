@@ -29,7 +29,7 @@ const form = useForm({
         <div class="overflow-x-auto p-3">
             <Link
                 href="/users"
-                class="bg-blue cursor-pointer px-3 py-2 text-xs font-medium text-white dark:bg-white dark:text-black"
+                class="mt-5 mb-3 inline-block cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
             >
                 Back
             </Link>

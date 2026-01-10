@@ -29,7 +29,7 @@ function deleteRole(id) {
             <Link
                 v-if="can('roles.create')"
                 href="/roles/create"
-                class="mt-5 cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
+                class="mt-5 mb-3 inline-block cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
             >
                 Create
             </Link>

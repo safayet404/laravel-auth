@@ -31,7 +31,7 @@ function deleteUser(id) {
             <Link
                 v-if="can('users.create')"
                 href="/users/create"
-                class="mt-5 cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
+                class="mt-5 mb-3 inline-block cursor-pointer rounded-md bg-blue-700 px-3 py-2 text-xs font-medium text-white dark:bg-purple-600 dark:text-white"
             >
                 Create
             </Link>
