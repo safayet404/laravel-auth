@@ -10,12 +10,15 @@ export interface BreadcrumbItem {
     title: string;
     href: string;
 }
+type AbilityRequirement = { action: string; subject: string };
 
 export interface NavItem {
     title: string;
     href: NonNullable<InertiaLinkProps['href']>;
     icon?: LucideIcon;
     isActive?: boolean;
+    ability?: AbilityRequirement;
+    children?: NavItem[];
 }
 
 export type AppPageProps<

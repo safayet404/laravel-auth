@@ -24,20 +24,18 @@ import {
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
+    { title: 'Dashboard', href: dashboard(), icon: LayoutGrid }, // public
     {
         title: 'Users',
         href: '/users',
         icon: Users,
+        ability: { action: 'read', subject: 'users' },
     },
     {
         title: 'Roles',
         href: '/roles',
         icon: RollerCoaster,
+        ability: { action: 'read', subject: 'roles' },
     },
 ];
 

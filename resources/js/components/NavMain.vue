@@ -8,11 +8,33 @@ import {
 } from '@/components/ui/sidebar';
 import { useActiveUrl } from '@/composables/useActiveUrl';
 import { type NavItem } from '@/types';
+import { useAbility } from '@casl/vue';
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
     items: NavItem[];
 }>();
+
+const ability = useAbility();
+
+const visibleItems = computed(() => {
+    const filterItems = (items: NavItem[]): NavItem[] =>
+        items
+            .map((i) => ({
+                ...i,
+                children: i.children ? filterItems(i.children) : undefined,
+            }))
+            .filter((i) => {
+                const ok =
+                    !i.ability ||
+                    ability.can(i.ability.action, i.ability.subject);
+                const hasChildren = i.children ? i.children.length > 0 : false;
+                return ok && (!i.children || hasChildren);
+            });
+
+    return filterItems(props.items);
+});
 
 const { urlIsActive } = useActiveUrl();
 </script>
@@ -20,8 +42,9 @@ const { urlIsActive } = useActiveUrl();
 <template>
     <SidebarGroup class="px-2 py-0">
         <SidebarGroupLabel>Platform</SidebarGroupLabel>
+
         <SidebarMenu>
-            <SidebarMenuItem v-for="item in items" :key="item.title">
+            <SidebarMenuItem v-for="item in visibleItems" :key="item.title">
                 <SidebarMenuButton
                     as-child
                     :is-active="urlIsActive(item.href)"
