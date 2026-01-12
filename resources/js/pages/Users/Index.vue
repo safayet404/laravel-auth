@@ -24,7 +24,7 @@ function deleteUser(id) {
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="Users" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="overflow-x-auto p-3">
