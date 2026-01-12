@@ -18,6 +18,16 @@ createInertiaApp({
             import.meta.glob<DefineComponent>('./pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
+        const stored = localStorage.getItem('userAbilityRules');
+
+        if (stored) {
+            try {
+                ability.update(JSON.parse(stored));
+            } catch (e) {
+                console.log('invalid userAbilityes is localstoreage');
+            }
+        }
+
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(abilitiesPlugin, ability)
