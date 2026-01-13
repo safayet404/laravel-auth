@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,18 @@ Route::resource("roles",RoleController::class)->only(['edit','update'])->middlew
 Route::resource("roles",RoleController::class)->only(['destroy'])->middleware("permission:roles.delete");
 
 Route::resource("roles",RoleController::class)->only(['index','show'])->middleware("permission:roles.view|roles.create|roles.update|roles.delete");
+
+
+// Interview Routes
+
+Route::resource("interview",InterviewController::class)->only(['create','store'])->middleware("permission:interview.create");
+
+Route::resource("interview",InterviewController::class)->only(['edit','update'])->middleware("permission:interview.edit");
+
+Route::resource("interview",InterviewController::class)->only(['destroy'])->middleware("permission:interview.delete");
+
+Route::resource("interview",InterviewController::class)->only(['index','show'])->middleware("permission:interview.view|interview.create|interview.update|interview.delete");
+
 
 
 

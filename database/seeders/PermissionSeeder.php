@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(
-                ['name' => $permission, 'guard_name' => 'web'] // guard is important
+                ['name' => $permission, 'guard_name' => 'web']
             );
         }
     }
