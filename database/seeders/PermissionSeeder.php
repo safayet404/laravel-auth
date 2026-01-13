@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
         $permissions = [
             'users.view',
             'users.create',
@@ -21,11 +20,18 @@ class PermissionSeeder extends Seeder
             'roles.view',
             'roles.edit',
             'roles.create',
-            'roles.delete'
+            'roles.delete',
+
+            'interview.view',
+            'interview.edit',
+            'interview.create',
+            'interview.delete',
         ];
 
-        foreach($permissions as $key => $value){
-            Permission::create(["name" => $value]);
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(
+                ['name' => $permission, 'guard_name' => 'web'] // guard is important
+            );
         }
     }
 }
