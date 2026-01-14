@@ -30,7 +30,27 @@ class InterviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+         $request->validate([
+        
+    'video' => ['required', 'file', 'mimetypes:video/webm,video/mp4,application/octet-stream', 'max:512000'],
+
+
+            'student_id' => ['nullable'],
+            'question_id' => ['nullable']
+        ]);
+
+        $file = $request->file('video');
+        $path = $file->store('interviews','public');
+
+        return response()->json([
+            'message' => 'Uploaded',
+            'path' => $path,
+            'mime' => $file->getMimeType(),
+            'size' => $file->getSize()
+        ]);
+
+        
     }
 
     /**
@@ -38,7 +58,7 @@ class InterviewController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**

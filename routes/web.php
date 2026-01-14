@@ -39,15 +39,15 @@ Route::resource("roles",RoleController::class)->only(['index','show'])->middlewa
 
 // Interview Routes
 
-Route::resource("interview",InterviewController::class)->only(['create','store'])->middleware("permission:interview.create");
+// Route::resource("interview",InterviewController::class)->only(['create','store'])->middleware("permission:interview.create");
 
-Route::resource("interview",InterviewController::class)->only(['edit','update'])->middleware("permission:interview.edit");
+// Route::resource("interview",InterviewController::class)->only(['edit','update'])->middleware("permission:interview.edit");
 
-Route::resource("interview",InterviewController::class)->only(['destroy'])->middleware("permission:interview.delete");
+// Route::resource("interview",InterviewController::class)->only(['destroy'])->middleware("permission:interview.delete");
 
-Route::resource("interview",InterviewController::class)->only(['index','show'])->middleware("permission:interview.view|interview.create|interview.update|interview.delete");
+// Route::resource("interview",InterviewController::class)->only(['index','show'])->middleware("permission:interview.view|interview.create|interview.update|interview.delete");
 
 
-
+Route::resource("interview",InterviewController::class);
 
 require __DIR__.'/settings.php';
