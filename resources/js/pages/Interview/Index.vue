@@ -14,6 +14,23 @@ const isRecording = ref(false);
 const uploadProgress = ref(0);
 const statusText = ref('Idle');
 
+
+const RECORD_SECONDS = 15;
+const countdown = ref(0);
+let countdownInterval = null;
+let autoStopTimeout = null;
+
+const clearTimers = () => {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+    if (autoStopTimeout) {
+        clearTimeout(autoStopTimeout);
+        autoStopTimeout = null;
+    }
+};
+
 // Media state
 let stream = null;
 let recorder = null;
@@ -52,6 +69,23 @@ const startCamera = async () => {
 
         // ✅ AUTO START RECORDING
         startRecording();
+
+        // ✅ START COUNTDOWN + AUTO STOP AFTER 20s
+        clearTimers();
+        countdown.value = RECORD_SECONDS;
+
+        countdownInterval = setInterval(() => {
+            countdown.value -= 1;
+            if (countdown.value <= 0) {
+                countdown.value = 0;
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+            }
+        }, 1000);
+
+        autoStopTimeout = setTimeout(async () => {
+            await stopCamera(); // stop + upload
+        }, RECORD_SECONDS * 1000);
     } catch (err) {
         console.error('Camera/Mic error:', err);
         statusText.value = 'Failed to start camera/mic';
@@ -80,7 +114,7 @@ const startRecording = () => {
         isRecording.value = true;
     };
 
-    recorder.start(); // starts recording
+    recorder.start();
 };
 
 const stopRecording = () => {
@@ -91,7 +125,6 @@ const stopRecording = () => {
             const type = recorder?.mimeType || pickMimeType() || 'video/webm';
             const blob = new Blob(chunks, { type });
 
-            // cleanup recorder data
             recorder = null;
             chunks = [];
             isRecording.value = false;
@@ -118,12 +151,8 @@ const uploadBlob = async (blob) => {
         const form = new FormData();
         form.append('video', file);
 
-        // Optional metadata (replace with real values if you have them)
-        // form.append('student_id', '123')
-        // form.append('question_id', '456')
-
-        await axios.post('/api/interview', form, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+        await axios.post('/interview', form, {
+            // ✅ DON'T set multipart header manually; browser sets boundary
             onUploadProgress: (evt) => {
                 if (!evt.total) return;
                 uploadProgress.value = Math.round(
@@ -135,22 +164,28 @@ const uploadBlob = async (blob) => {
         statusText.value = 'Uploaded successfully ✅';
     } catch (err) {
         console.error('Upload failed:', err);
+        console.log('Server said:', err.response?.data);
         statusText.value = 'Upload failed ❌';
         alert('Upload failed. Please try again.');
     }
 };
 
 const stopCamera = async () => {
+    // ✅ stop timers whenever we stop
+    clearTimers();
+    countdown.value = 0;
+
     // If nothing is running, just ensure cleanup
     if (!stream && !recorder) {
         cameraOn.value = false;
         isRecording.value = false;
+        statusText.value = 'Idle';
         return;
     }
 
     statusText.value = 'Stopping recording...';
 
-    // ✅ AUTO STOP RECORDING
+    // Stop recording
     const blob = await stopRecording();
     lastBlob = blob;
 
@@ -172,7 +207,7 @@ const stopCamera = async () => {
 
     cameraOn.value = false;
 
-    // ✅ AUTO UPLOAD AFTER STOP
+    // Auto upload after stop
     if (lastBlob) {
         await uploadBlob(lastBlob);
     } else {
@@ -181,7 +216,7 @@ const stopCamera = async () => {
 };
 
 onBeforeUnmount(() => {
-    // hard cleanup when leaving page
+    clearTimers();
     if (stream) stream.getTracks().forEach((t) => t.stop());
 });
 </script>
@@ -191,12 +226,29 @@ onBeforeUnmount(() => {
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="p-4">
+            <!-- Big Circle -->
+            <div class="flex justify-center">
+                <button
+                    class="h-60 w-60 rounded-full border-2 border-red-700 bg-white text-lg font-semibold text-black"
+                    :disabled="isRecording"
+                >
+                    Here We Go
+                </button>
+            </div>
+
+            <!-- ✅ Countdown -->
+            <div v-if="isRecording" class="mt-3 text-center text-xl text-white">
+                Stopping in: <b>{{ countdown }}</b
+                >s
+            </div>
+
             <div class="mt-5 flex justify-center gap-4">
                 <button
-                    class="bg-white px-3 py-2 font-bold text-black"
+                    class="bg-white px-3 py-2 font-bold text-black disabled:opacity-60"
                     @click="startCamera"
+                    :disabled="isRecording"
                 >
-                    Start Camera (Auto Record)
+                    Start Camera (Auto Record 20s)
                 </button>
 
                 <button

@@ -32,14 +32,10 @@ class InterviewController extends Controller
     {
 
          $request->validate([
-        
-    'video' => ['required', 'file', 'mimetypes:video/webm,video/mp4,application/octet-stream', 'max:512000'],
-
-
+    'video' => ['required', 'file',],
             'student_id' => ['nullable'],
             'question_id' => ['nullable']
         ]);
-
         $file = $request->file('video');
         $path = $file->store('interviews','public');
 
