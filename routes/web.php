@@ -25,8 +25,10 @@ Route::resource("users",UserController::class)->only(['destroy'])->middleware("p
 
 Route::resource("users",UserController::class)->only(['index','show'])->middleware("permission:users.view|users.create|users.update|users.delete");
 
-
+// Route::resource("users",UserController::class);
 // Roles Routes
+
+// Route::resource("roles",RoleController::class);
 
 Route::resource("roles",RoleController::class)->only(['create','store'])->middleware("permission:roles.create");
 
