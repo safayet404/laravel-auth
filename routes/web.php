@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,5 +52,13 @@ Route::resource("roles",RoleController::class)->only(['index','show'])->middlewa
 
 
 Route::resource("interview",InterviewController::class);
+
+
+// Students
+
+Route::resource("student",StudentController::class);
+
+
+
 
 require __DIR__.'/settings.php';
