@@ -17,12 +17,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
       $user = User::with("roles")->get();
-      if ($request->wantsJson()) {
-        return response()->json([
-            'status' => 'success',
-            'data' => $user
-        ]);
-    }
+
         return Inertia::render("Users/Index",[
             "users" => $user,
 
@@ -123,5 +118,16 @@ class UserController extends Controller
 
         return to_route("users.index");
 
+    }
+
+    public function allUsers(){
+     
+      try {
+         $users = User::with('roles')->get();
+
+      return  response()->json(['status' => 'success','data' => $users]);
+      } catch (\Throwable $th) {
+        return response()->json(['status' => 'failed','message' => $th->getMessage()]);
+      }
     }
 }
