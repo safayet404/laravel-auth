@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\StudentComplianceProfile;
 use Illuminate\Http\Request;
 
 class StudentComplianceController extends Controller
@@ -42,7 +43,7 @@ class StudentComplianceController extends Controller
 
             
 
-            $profile = StudentComplianceController::create($data + [
+            $profile = StudentComplianceProfile::create($data + [
                 'student_id' => $student->id,
                 'counselor_user_id' => $request->user()->id
             ]);

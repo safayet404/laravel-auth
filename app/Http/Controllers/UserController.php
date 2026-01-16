@@ -14,9 +14,15 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
       $user = User::with("roles")->get();
+      if ($request->wantsJson()) {
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ]);
+    }
         return Inertia::render("Users/Index",[
             "users" => $user,
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StudentComplianceController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,9 @@ Route::get('/', function () {
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
 
 Route::resource("users",UserController::class)->only(['create','store'])->middleware("permission:users.create");
 
@@ -59,6 +63,8 @@ Route::resource("interview",InterviewController::class);
 Route::resource("student",StudentController::class);
 
 
+// Student Compliance Profile
 
+Route::post('/student/{student}/compliance-profiles',[StudentComplianceController::class,'store']);
 
 require __DIR__.'/settings.php';
