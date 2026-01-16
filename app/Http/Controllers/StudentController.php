@@ -41,8 +41,8 @@ class StudentController extends Controller
     
              return response()->json(['status' => 'success', 'message' => 'Student Created', 'data' => $student ]);
     
-        } catch (Exception $e) {
-            return response()->json(['status' => 'failed', 'message' => $e->getMessage()]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'failed', 'message' => $th->getMessage()]);
 
         }
     }
