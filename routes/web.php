@@ -4,6 +4,7 @@ use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentComplianceController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentDocumentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -67,5 +68,9 @@ Route::resource("student",StudentController::class);
 // Student Compliance Profile
 
 Route::post('/student/{student}/compliance-profiles',[StudentComplianceController::class,'store']);
+
+//  Student Documents Upload
+
+Route::post("students/{student}/documents",[StudentDocumentController::class,'store']);
 
 require __DIR__.'/settings.php';
