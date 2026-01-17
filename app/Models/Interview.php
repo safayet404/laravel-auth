@@ -21,9 +21,8 @@ class Interview extends Model
     public function questions(){
         return $this->hasMany(InterviewQuestion::class)->orderBy('order_index');
     }
-    public function messages(){
-        return $this->hasMany(ComplianceMessage::class)->latest();
-    }
+    public function messages() { return $this->hasMany(ComplianceMessage::class)->latest(); }
+
 
 
 }

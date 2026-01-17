@@ -13,6 +13,8 @@ use function Termwind\render;
 
 class InterviewController extends Controller
 {
+
+   
     /**
      * Display a listing of the resource.
      */
@@ -66,7 +68,7 @@ class InterviewController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Interview Created','data' => $interview]);
 
     } catch (\Throwable $th) {
-                return response()->json(['status' => 'success', 'message' => $th->getMessage() ]);
+                return response()->json(['status' => 'failed', 'message' => $th->getMessage() ]);
 
     }
 
@@ -78,7 +80,18 @@ class InterviewController extends Controller
      */
     public function show(Interview $interview)
     {
-        return $interview->load(['student','complianceProfile','questions','message.author']);
+        try {
+            
+            return $interview->load(['student','complianceProfile','questions','messages.author']);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+            
+        }
+    }
+
+    public function allInterviews()
+    {
+        return Interview::all();
     }
 
     public function generateQuestions(Request $request,Interview $interview,AiInterviewService $ai)

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComplianceMessageController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentComplianceController;
@@ -68,9 +69,26 @@ Route::resource("student",StudentController::class);
 // Student Compliance Profile
 
 Route::post('/student/{student}/compliance-profiles',[StudentComplianceController::class,'store']);
+Route::get('/students/compliance-profiles',[StudentComplianceController::class,'index']);
 
 //  Student Documents Upload
 
 Route::post("students/{student}/documents",[StudentDocumentController::class,'store']);
+
+// Interview
+
+Route::post('/interviews',[InterviewController::class,'store']);
+
+Route::get('/interviews/all-interviews',[InterviewController::class,'allInterviews']);
+
+Route::get('/interviews/{interview}',[InterviewController::class,'show']);
+
+Route::post('/interviews/{interview}/generate-questions',[InterviewController::class,'generateQuestions']);
+Route::post('/interviews/{interview}/start',[InterviewController::class,'start']);
+
+Route::post('/interviews/{interview}/recording',[InterviewController::class,'upload']);
+
+Route::get('/interviews/{interview}/compliance-message',[ComplianceMessageController::class,'index']);
+Route::post('interviews/{interview}/compliance-message',[ComplianceMessageController::class,'store']);
 
 require __DIR__.'/settings.php';

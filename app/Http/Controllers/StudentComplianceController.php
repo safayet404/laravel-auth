@@ -13,7 +13,7 @@ class StudentComplianceController extends Controller
      */
     public function index()
     {
-        //
+        return StudentComplianceProfile::all();
     }
 
     /**

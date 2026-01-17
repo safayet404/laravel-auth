@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('compliance_messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('interview_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('author_user_id')->constrained('users')->cascadeOnDelete();
+            $table->text('message');
             $table->timestamps();
         });
     }

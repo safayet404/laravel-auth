@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessInterviewAiJob;
 use App\Models\Interview;
 use Illuminate\Http\Request;
 
@@ -81,7 +82,7 @@ class InterviewRecordingController extends Controller
                 'completed_at' => now()
             ]);
 
-            //  TODO : ProcessInterDispath 
+           ProcessInterviewAiJob::dispatch($interview->id);
 
                 return response()->json(['ok' => true]);
 
