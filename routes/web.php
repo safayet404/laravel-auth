@@ -68,12 +68,12 @@ Route::resource("student",StudentController::class);
 
 // Student Compliance Profile
 
-Route::post('/student/{student}/compliance-profiles',[StudentComplianceController::class,'store']);
+Route::post('/students/{student}/compliance-profiles',[StudentComplianceController::class,'store']);
 Route::get('/students/compliance-profiles',[StudentComplianceController::class,'index']);
 
 //  Student Documents Upload
 
-Route::post("students/{student}/documents",[StudentDocumentController::class,'store']);
+Route::post("/students/{student}/documents",[StudentDocumentController::class,'store']);
 
 // Interview
 
