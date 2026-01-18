@@ -142,27 +142,40 @@ function runQuestion() {
 
 let finishing = false;
 
-async function finish() {
+async function stopAndUpload({ stopCamera = true } = {}) {
     if (finishing) return;
     finishing = true;
 
     phase.value = 'uploading';
     pinned.value = false;
+    clearTimer();
 
+    // 1) Stop recorder and WAIT for stop
     if (recorder && recorder.state !== 'inactive') {
         await new Promise((resolve) => {
-            recorder.onstop = resolve;
+            const prevOnStop = recorder.onstop;
+            recorder.onstop = (e) => {
+                if (typeof prevOnStop === 'function') prevOnStop(e);
+                resolve();
+            };
             recorder.stop();
         });
     }
 
-    console.log('chunks:', chunks.length);
+    // 2) Optionally stop camera stream
+    if (stopCamera && stream) {
+        stream.getTracks().forEach((t) => t.stop());
+        stream = null;
+    }
+
+    // 3) Build blob and upload
     const blob = new Blob(chunks, { type: 'video/webm' });
-    console.log('blob size:', blob.size);
+    console.log('Final blob size:', blob.size);
 
     if (blob.size === 0) {
         phase.value = 'done';
-        console.log('No recording data captured (blob size 0).');
+        finishing = false;
+        recorder = null;
         return;
     }
 
@@ -171,41 +184,19 @@ async function finish() {
 
     await axios.post(`/interviews/${props.interviewId}/recording`, form);
 
+    // 4) Reset state so it’s definitely stopped
+    recorder = null;
+    chunks = [];
     phase.value = 'done';
+    finishing = false;
+}
+
+async function finish() {
+    await stopAndUpload({ stopCamera: true });
 }
 
 async function stopAll() {
-    if (finishing) return;
-    finishing = true;
-
-    clearTimer();
-    phase.value = 'uploading';
-    pinned.value = false;
-
-    // Stop recorder and wait until data is finalized
-    if (recorder && recorder.state !== 'inactive') {
-        await new Promise((resolve) => {
-            recorder.onstop = resolve;
-            recorder.stop();
-        });
-    }
-
-    // Stop camera stream (optional, after stopping recorder)
-    if (stream) stream.getTracks().forEach((t) => t.stop());
-
-    const blob = new Blob(chunks, { type: 'video/webm' });
-    if (blob.size === 0) {
-        console.log('No recording data captured.');
-        phase.value = 'done';
-        return;
-    }
-
-    const form = new FormData();
-    form.append('recording', blob, `interview-${props.interviewId}.webm`);
-
-    await axios.post(`/interviews/${props.interviewId}/recording`, form);
-
-    phase.value = 'done';
+    await stopAndUpload({ stopCamera: true });
 }
 
 onMounted(async () => {
