@@ -45,6 +45,12 @@ const mainNavItems: NavItem[] = [
         icon: RollerCoaster,
         ability: { action: 'interview.view', subject: 'all' },
     },
+    {
+        title: 'Interview Session',
+        href: '/session',
+        icon: RollerCoaster,
+        ability: { action: 'interview.view', subject: 'all' },
+    },
 ];
 </script>
 

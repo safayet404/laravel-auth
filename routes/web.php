@@ -59,7 +59,7 @@ Route::resource("roles",RoleController::class)->only(['index','show'])->middlewa
 
 
 Route::resource("interview",InterviewController::class);
-
+Route::get('/session/{interviewId}',[InterviewController::class,'interviewSession']);
 
 // Students
 

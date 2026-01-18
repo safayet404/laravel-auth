@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import axios from 'axios';
 import { computed, ref } from 'vue';
 
@@ -290,12 +290,12 @@ async function generateQuestions() {
                         >
                             Generate Questions (AI)
                         </button>
-
-                        <router-link
+                        <Link
                             class="inline-block rounded border px-3 py-2"
+                            :href="`/session/${interviewId}`"
                         >
                             Go to Interview Session
-                        </router-link>
+                        </Link>
                         <router-link
                             class="inline-block rounded border px-3 py-2"
                             :to="{

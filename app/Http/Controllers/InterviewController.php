@@ -94,6 +94,15 @@ class InterviewController extends Controller
         return Interview::all();
     }
 
+    public function interviewSession($id)
+    {
+       $interview = Interview::with('questions')->findOrFail($id);
+       return Inertia::render("Session/Index", [
+        'interviewId' => (int) $id,
+        'interview' => $interview // This sends the data shown in your JSON error
+    ]);
+    }
+
     public function generateQuestions(Request $request,Interview $interview,AiInterviewService $ai)
     {
         try {
