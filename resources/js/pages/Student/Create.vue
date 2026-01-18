@@ -138,7 +138,7 @@ async function generateQuestions() {
     try {
         const { data } = await axios.post(
             `/interviews/${interviewId.value}/generate-questions`,
-            { count: 5 },
+            { count: 1 },
         );
         console.log('generate questions', data);
 

@@ -5,28 +5,6 @@
         <div v-if="loading">Loading…</div>
 
         <div v-else>
-            <div class="relative mb-4 min-h-[140px] rounded border p-4">
-                <div
-                    v-if="activeQ"
-                    :class="
-                        pinned
-                            ? 'absolute right-2 bottom-2 text-sm opacity-80'
-                            : 'text-lg'
-                    "
-                >
-                    {{ activeQ.question_text }}
-                </div>
-                <div class="mt-3 text-sm opacity-80">
-                    <div v-if="phase === 'idle'">Ready.</div>
-                    <div v-if="phase === 'prep'">Prep: {{ countdown }}s</div>
-                    <div v-if="phase === 'answer'">
-                        Answer: {{ countdown }}s
-                    </div>
-                    <div v-if="phase === 'uploading'">Uploading recording…</div>
-                    <div v-if="phase === 'done'">Submitted!</div>
-                </div>
-            </div>
-
             <video
                 ref="videoEl"
                 autoplay
@@ -50,6 +28,28 @@
                 >
                     Stop
                 </button>
+            </div>
+
+            <div class="relative mb-4 min-h-[140px] rounded border p-4">
+                <div
+                    v-if="activeQ"
+                    :class="
+                        pinned
+                            ? 'absolute right-2 bottom-2 text-sm opacity-80'
+                            : 'text-lg'
+                    "
+                >
+                    {{ activeQ.type }}
+                </div>
+                <div class="mt-3 text-sm opacity-80">
+                    <div v-if="phase === 'idle'">Ready.</div>
+                    <div v-if="phase === 'prep'">Prep: {{ countdown }}s</div>
+                    <div v-if="phase === 'answer'">
+                        Answer: {{ countdown }}s
+                    </div>
+                    <div v-if="phase === 'uploading'">Uploading recording…</div>
+                    <div v-if="phase === 'done'">Submitted!</div>
+                </div>
             </div>
         </div>
     </div>
@@ -140,7 +140,12 @@ function runQuestion() {
     });
 }
 
+let finishing = false;
+
 async function finish() {
+    if (finishing) return;
+    finishing = true;
+
     phase.value = 'uploading';
     pinned.value = false;
 
@@ -151,18 +156,55 @@ async function finish() {
         });
     }
 
+    console.log('chunks:', chunks.length);
     const blob = new Blob(chunks, { type: 'video/webm' });
+    console.log('blob size:', blob.size);
+
+    if (blob.size === 0) {
+        phase.value = 'done';
+        console.log('No recording data captured (blob size 0).');
+        return;
+    }
+
     const form = new FormData();
     form.append('recording', blob, `interview-${props.interviewId}.webm`);
+
     await axios.post(`/interviews/${props.interviewId}/recording`, form);
 
     phase.value = 'done';
 }
 
-function stopAll() {
+async function stopAll() {
+    if (finishing) return;
+    finishing = true;
+
     clearTimer();
-    if (recorder && recorder.state !== 'inactive') recorder.stop();
+    phase.value = 'uploading';
+    pinned.value = false;
+
+    // Stop recorder and wait until data is finalized
+    if (recorder && recorder.state !== 'inactive') {
+        await new Promise((resolve) => {
+            recorder.onstop = resolve;
+            recorder.stop();
+        });
+    }
+
+    // Stop camera stream (optional, after stopping recorder)
     if (stream) stream.getTracks().forEach((t) => t.stop());
+
+    const blob = new Blob(chunks, { type: 'video/webm' });
+    if (blob.size === 0) {
+        console.log('No recording data captured.');
+        phase.value = 'done';
+        return;
+    }
+
+    const form = new FormData();
+    form.append('recording', blob, `interview-${props.interviewId}.webm`);
+
+    await axios.post(`/interviews/${props.interviewId}/recording`, form);
+
     phase.value = 'done';
 }
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ComplianceMessageController;
 use App\Http\Controllers\InterviewController;
+use App\Http\Controllers\InterviewRecordingController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentComplianceController;
 use App\Http\Controllers\StudentController;
@@ -86,7 +87,10 @@ Route::get('/interviews/{interview}',[InterviewController::class,'show']);
 Route::post('/interviews/{interview}/generate-questions',[InterviewController::class,'generateQuestions']);
 Route::post('/interviews/{interview}/start',[InterviewController::class,'start']);
 
-Route::post('/interviews/{interview}/recording',[InterviewController::class,'upload']);
+  Route::post('/interviews/{interview}/recording', [InterviewRecordingController::class, 'upload']);
+
+Route::post("/int",[InterviewController::class,'recordupload']);
+
 
 Route::get('/interviews/{interview}/compliance-message',[ComplianceMessageController::class,'index']);
 Route::post('interviews/{interview}/compliance-message',[ComplianceMessageController::class,'store']);

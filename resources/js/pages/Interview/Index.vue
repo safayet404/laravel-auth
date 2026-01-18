@@ -14,7 +14,6 @@ const isRecording = ref(false);
 const uploadProgress = ref(0);
 const statusText = ref('Idle');
 
-
 const RECORD_SECONDS = 15;
 const countdown = ref(0);
 let countdownInterval = null;
@@ -151,7 +150,7 @@ const uploadBlob = async (blob) => {
         const form = new FormData();
         form.append('video', file);
 
-        await axios.post('/interview', form, {
+        await axios.post('/int', form, {
             // ✅ DON'T set multipart header manually; browser sets boundary
             onUploadProgress: (evt) => {
                 if (!evt.total) return;

@@ -24,8 +24,8 @@ class AiInterviewService
         'questions' => collect(range(1,$count))->map(function($i) use ($profile) {
             return [
                 'type' => 'short',
-                'prep_seconds' => 12,
-                'answer_seconds' => 45,
+                'prep_seconds' => 2,
+                'answer_seconds' => 3,
                 'text' => "why did you choose {$profile->program} at {$profile->institution} ?",
                 'rubric' => ['clarity' => 1, 'consistency' => 1]
             ];

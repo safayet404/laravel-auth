@@ -68,7 +68,7 @@ class InterviewController extends Controller
         return response()->json(['status' => 'success', 'message' => 'Interview Created','data' => $interview]);
 
     } catch (\Throwable $th) {
-                return response()->json(['status' => 'failed', 'message' => $th->getMessage() ]);
+        return response()->json(['status' => 'failed', 'message' => $th->getMessage() ]);
 
     }
 
@@ -157,6 +157,27 @@ class InterviewController extends Controller
         $interview->update(['status' => 'in_progress', 'started_at' => now()]);
         return $interview->fresh();
     }
+
+    public function recordUpload(Request $request)
+{
+    $request->validate([
+        'video' => ['required', 'file', 'max:51200'], // 50MB
+        // If you want strict types:
+        // 'video' => ['required','file','mimetypes:video/webm,video/mp4,video/quicktime','max:51200'],
+    ]);
+
+    // Debug (temporary): confirm Laravel sees the file
+    // dd($request->file('video')->getClientMimeType(), $request->file('video')->getSize());
+
+    $path = $request->file('video')->store('interviews', 'public');
+
+    return response()->json([
+        'message' => 'uploaded',
+        'path' => $path,
+        'mime' => $request->file('video')->getClientMimeType(),
+        'size' => $request->file('video')->getSize(),
+    ]);
+}
 
     /**
      * Show the form for editing the specified resource.
