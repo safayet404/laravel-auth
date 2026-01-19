@@ -23,6 +23,10 @@ class InterviewController extends Controller
         return Inertia::render('Interview/Index');
     }
 
+    public function msg(){
+        return Inertia::render('Compliance/Msg');
+    }
+
     /**
      * Show the form for creating a new resource.
      */

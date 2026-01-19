@@ -51,6 +51,12 @@ const mainNavItems: NavItem[] = [
         icon: RollerCoaster,
         ability: { action: 'interview.view', subject: 'all' },
     },
+    {
+        title: 'Compliance Message',
+        href: '/compliance',
+        icon: RollerCoaster,
+        // ability: { action: 'interview.view', subject: 'all' },
+    },
 ];
 </script>
 
