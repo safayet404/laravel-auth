@@ -34,6 +34,9 @@ class InterviewController extends Controller
         public function setup(){
         return Inertia::render('Interview/Setup');
     }
+     public function questions(){
+        return Inertia::render('Interview/Questions');
+    }
     
 
 
