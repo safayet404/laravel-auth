@@ -27,6 +27,10 @@ class InterviewController extends Controller
         return Inertia::render('Compliance/Msg');
     }
 
+      public function cas(){
+        return Inertia::render('Interview/Cas');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
