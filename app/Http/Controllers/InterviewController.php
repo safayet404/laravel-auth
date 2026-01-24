@@ -31,6 +31,12 @@ class InterviewController extends Controller
         return Inertia::render('Interview/Cas');
     }
 
+        public function setup(){
+        return Inertia::render('Interview/Setup');
+    }
+    
+
+
     /**
      * Show the form for creating a new resource.
      */

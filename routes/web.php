@@ -65,6 +65,7 @@ Route::resource("interview",InterviewController::class);
 Route::get('/session/{interviewId}',[InterviewController::class,'interviewSession']);
 Route::get('/compliance',[InterviewController::class,'msg']);
 Route::get('/cas',[InterviewController::class,'cas']);
+Route::get('/setup',[InterviewController::class,'setup']);
 
 // Students
 

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { FileCheck, List, Headphones, ArrowLeft } from 'lucide-vue-next';
+import { Link } from '@inertiajs/vue3';
 
 // 1. Logic: Track which section is currently open
 const activeSection = ref('interviews');
@@ -75,10 +76,10 @@ const setSection = (section) => {
                         <p class="text-slate-600 dark:text-slate-400 text-sm">
                             You have been asked to complete a recorded video interview.
                         </p>
-                        <button
+                        <Link href="/setup"
                             class="w-fit px-8 py-2.5 bg-[#0070f3] hover:bg-blue-600 text-white font-semibold rounded-lg transition-all active:scale-95">
                             Start interview
-                        </button>
+                        </Link>
                     </div>
                 </div>
 
