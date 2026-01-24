@@ -22,30 +22,32 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/health', fn () => 'OK');
 
 
-
-Route::resource("users",UserController::class)->only(['create','store'])->middleware("permission:users.create");
-
-Route::resource("users",UserController::class)->only(['edit','update'])->middleware("permission:users.edit");
-
-Route::resource("users",UserController::class)->only(['destroy'])->middleware("permission:users.delete");
-
-Route::resource("users",UserController::class)->only(['index','show'])->middleware("permission:users.view|users.create|users.update|users.delete");
 
 Route::get("all-users",[UserController::class,'allUsers']);
-// Route::resource("users",UserController::class);
+
+// Route::resource("users",UserController::class)->only(['create','store'])->middleware("permission:users.create");
+
+// Route::resource("users",UserController::class)->only(['edit','update'])->middleware("permission:users.edit");
+
+// Route::resource("users",UserController::class)->only(['destroy'])->middleware("permission:users.delete");
+
+// Route::resource("users",UserController::class)->only(['index','show'])->middleware("permission:users.view|users.create|users.update|users.delete");
+
+Route::resource("users",UserController::class);
 // Roles Routes
 
-// Route::resource("roles",RoleController::class);
+Route::resource("roles",RoleController::class);
 
-Route::resource("roles",RoleController::class)->only(['create','store'])->middleware("permission:roles.create");
+// Route::resource("roles",RoleController::class)->only(['create','store'])->middleware("permission:roles.create");
 
-Route::resource("roles",RoleController::class)->only(['edit','update'])->middleware("permission:roles.edit");
+// Route::resource("roles",RoleController::class)->only(['edit','update'])->middleware("permission:roles.edit");
 
-Route::resource("roles",RoleController::class)->only(['destroy'])->middleware("permission:roles.delete");
+// Route::resource("roles",RoleController::class)->only(['destroy'])->middleware("permission:roles.delete");
 
-Route::resource("roles",RoleController::class)->only(['index','show'])->middleware("permission:roles.view|roles.create|roles.update|roles.delete");
+// Route::resource("roles",RoleController::class)->only(['index','show'])->middleware("permission:roles.view|roles.create|roles.update|roles.delete");
 
 
 // Interview Routes

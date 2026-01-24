@@ -23,14 +23,14 @@ const mainNavItems: NavItem[] = [
         title: 'Users',
         href: '/users',
         icon: Users,
-        ability: { action: 'users.view', subject: 'all' },
+        // ability: { action: 'users.view', subject: 'all' },
     },
 
     {
         title: 'Roles',
         href: '/roles',
         icon: RollerCoaster,
-        ability: { action: 'roles.view', subject: 'all' },
+        // ability: { action: 'roles.view', subject: 'all' },
     },
     {
         title: 'Student',
