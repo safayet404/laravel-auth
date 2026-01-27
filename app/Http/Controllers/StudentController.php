@@ -63,15 +63,22 @@ class StudentController extends Controller
             $email = $request->input('email');
             $password = $request->input('password');
 
-            $student = Student::where('email', $email)->select('id', 'password')->first();
+            $student = Student::where('email', $email)->select('id', 'password', 'first_name', 'last_name', 'email')->first();
 
             if ($student && Hash::check($password, $student->password)) {
                 $token = JWTToken::CreateToken($email, $student->id);
                 return response()->json([
                     'status' => 'success',
                     'message' => "User Login Successfull",
-                    'token' => $token
-                ])->cookie('token', $token, 60 * 24 * 30);
+
+                    'token' => $token,
+                    'student' => [
+                        'id' => $student->id,
+                        'first_name' => $student->first_name,
+                        'last_name' => $student->last_name,
+                        'email' => $student->email,
+                    ]
+                ])->cookie('token', $token, 60 * 24 * 30, '/', null, false, true, false, 'Lax');
             } else {
                 return response()->json([
                     'status' => 'failed',

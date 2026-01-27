@@ -70,10 +70,11 @@ Route::get('/questions', [InterviewController::class, 'questions']);
 
 // Students
 
-Route::resource("student", StudentController::class);
-Route::post("/student/login", [StudentController::class, 'studentLogin']);
-Route::get("/student/me", [StudentController::class, 'me'])->middleware('student.jwt');
 
+Route::resource("student", StudentController::class);
+Route::post("/student-login", [StudentController::class, 'studentLogin']);
+Route::get("/student-profile", [StudentController::class, 'me'])->middleware('student.jwt');
+Route::post("/student-logout", [StudentController::class, 'logout']);
 
 // Student Compliance Profile
 

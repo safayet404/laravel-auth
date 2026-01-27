@@ -15,7 +15,7 @@ class JWTToken
             'iss' => 'cas-token',
             'iat' => time(),
             'exp' => time() + 60 * 60 * 24 * 30,
-            'userEmail' => $studentEmail,
+            'studentEmail' => $studentEmail,
             'studentID' => $studentID,
 
         ];
