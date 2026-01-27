@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $fillable = ['first_name','last_name','email','dob'];
+    protected $fillable = ['first_name','last_name','email','dob','password'];
     protected $casts = ['dob' => 'date'];
 
     public function complianceProfiles() {

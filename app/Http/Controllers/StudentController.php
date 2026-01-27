@@ -6,6 +6,9 @@ use App\Models\Student;
 use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
+
+
 
 class StudentController extends Controller
 {
@@ -38,7 +41,12 @@ class StudentController extends Controller
                 'last_name' => 'required|string|max:100',
                 'email' => 'nullable|email|max:255',
                 'dob' => 'nullable|date',
+                'password' => 'nullable|string|min:6',
             ]);
+
+            if(!empty($data['password'])){
+                $data['password'] = Hash::make($data['password']);
+            }
 
             $student = Student::create($data);
     
