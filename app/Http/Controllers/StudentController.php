@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\JWTToken;
 use App\Models\Student;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-          return Inertia::render("Student/Index",[
+        return Inertia::render("Student/Index", [
             'students' => Student::all()
         ]);
     }
@@ -36,7 +37,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         try {
-             $data = $request->validate([
+            $data = $request->validate([
                 'first_name' => 'required|string|max:100',
                 'last_name' => 'required|string|max:100',
                 'email' => 'nullable|email|max:255',
@@ -44,17 +45,41 @@ class StudentController extends Controller
                 'password' => 'nullable|string|min:6',
             ]);
 
-            if(!empty($data['password'])){
+            if (!empty($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
             }
 
             $student = Student::create($data);
-    
-             return response()->json(['status' => 'success', 'message' => 'Student Created', 'data' => $student ]);
-    
+
+            return response()->json(['status' => 'success', 'message' => 'Student Created', 'data' => $student]);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'failed', 'message' => $th->getMessage()]);
+        }
+    }
 
+    public function studentLogin(Request $request)
+    {
+        try {
+            $email = $request->input('email');
+            $password = $request->input('password');
+
+            $student = Student::where('email', $email)->select('id', 'password')->first();
+
+            if ($student && Hash::check($password, $student->password)) {
+                $token = JWTToken::CreateToken($email, $student->id);
+                return response()->json([
+                    'status' => 'success',
+                    'message' => "User Login Successfull",
+                    'token' => $token
+                ])->cookie('token', $token, 60 * 24 * 30);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'unauthorized'
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
         }
     }
 
