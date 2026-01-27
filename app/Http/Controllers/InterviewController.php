@@ -116,7 +116,7 @@ class InterviewController extends Controller
        $interview = Interview::with('questions')->findOrFail($id);
        return Inertia::render("Session/Index", [
         'interviewId' => (int) $id,
-        'interview' => $interview // This sends the data shown in your JSON error
+        'interview' => $interview 
     ]);
     }
 

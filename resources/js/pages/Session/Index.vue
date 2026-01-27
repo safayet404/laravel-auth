@@ -5,40 +5,22 @@
         <div v-if="loading">Loading…</div>
 
         <div v-else>
-            <video
-                ref="videoEl"
-                autoplay
-                playsinline
-                muted
-                class="mb-3 w-full rounded border"
-            ></video>
+            <video ref="videoEl" autoplay playsinline muted class="mb-3 w-full rounded border"></video>
 
             <div class="flex gap-2">
-                <button
-                    class="rounded border px-3 py-2"
-                    @click="begin"
-                    :disabled="phase !== 'idle'"
-                >
+                <button class="rounded border px-3 py-2" @click="begin" :disabled="phase !== 'idle'">
                     Start
                 </button>
-                <button
-                    class="rounded border px-3 py-2"
-                    @click="stopAll"
-                    :disabled="phase === 'done'"
-                >
+                <button class="rounded border px-3 py-2" @click="stopAll" :disabled="phase === 'done'">
                     Stop
                 </button>
             </div>
 
             <div class="relative mb-4 min-h-[140px] rounded border p-4">
-                <div
-                    v-if="activeQ"
-                    :class="
-                        pinned
-                            ? 'absolute right-2 bottom-2 text-sm opacity-80'
-                            : 'text-lg'
-                    "
-                >
+                <div v-if="activeQ" :class="pinned
+                        ? 'absolute right-2 bottom-2 text-sm opacity-80'
+                        : 'text-lg'
+                    ">
                     {{ activeQ.type }}
                 </div>
                 <div class="mt-3 text-sm opacity-80">
@@ -182,7 +164,10 @@ async function stopAndUpload({ stopCamera = true } = {}) {
     const form = new FormData();
     form.append('recording', blob, `interview-${props.interviewId}.webm`);
 
-    await axios.post(`/interviews/${props.interviewId}/recording`, form);
+    const a = await axios.post(`/interviews/${props.interviewId}/recording`, form);
+    console.log(a);
+
+
 
     // 4) Reset state so it’s definitely stopped
     recorder = null;

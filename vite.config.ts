@@ -8,13 +8,11 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/js/app.ts'],
-            ssr: 'resources/js/ssr.ts',
-            refresh: true,
+
+            refresh: false,
         }),
         tailwindcss(),
-        wayfinder({
-            formVariants: true,
-        }),
+
         vue({
             template: {
                 transformAssetUrls: {
@@ -24,4 +22,14 @@ export default defineConfig({
             },
         }),
     ],
+    server: {
+        watch: {
+            ignored: [
+                '**/vendor/**',
+                '**/storage/**',
+                '**/bootstrap/**',
+                '**/public/**',
+            ]
+        }
+    }
 });

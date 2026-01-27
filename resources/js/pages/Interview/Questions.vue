@@ -110,7 +110,7 @@ const nextQuestion = () => {
         currentQuestionIndex.value++;
         startPreparation();
     } else {
-        stopMediaTracks();
+
         alert("Interview Complete! All responses have been saved.");
         interviewStarted.value = false; // Reset for demo purposes
         currentQuestionIndex.value = 0;
@@ -211,7 +211,7 @@ const nextQuestion = () => {
                     <h3 class="text-2xl font-bold mb-8 text-slate-800">Answer Recorded</h3>
 
                     <div
-                        class="w-3/5 aspect-video bg-slate-100 rounded-[2rem] mb-10 flex flex-col items-center justify-center relative group shadow-inner border-2 border-slate-50">
+                        class="w-3/5 aspect-video bg-slate-100 rounded-4xl mb-10 flex flex-col items-center justify-center relative group shadow-inner border-2 border-slate-50">
                         <div
                             class="p-6 bg-blue-600 rounded-full shadow-xl shadow-blue-100 cursor-pointer hover:scale-110 transition-transform">
                             <Play :size="32" class="text-white fill-current ml-1" />
