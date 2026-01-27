@@ -72,6 +72,7 @@ Route::get('/questions', [InterviewController::class, 'questions']);
 
 Route::resource("student", StudentController::class);
 Route::post("/student/login", [StudentController::class, 'studentLogin']);
+Route::get("/student/me", [StudentController::class, 'me'])->middleware('student.jwt');
 
 
 // Student Compliance Profile

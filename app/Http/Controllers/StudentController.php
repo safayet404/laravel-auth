@@ -82,7 +82,22 @@ class StudentController extends Controller
             return $this->error($th->getMessage());
         }
     }
+    public function me(Request $request)
+    {
+        $student = $request->attributes->get('student');
 
+        return response()->json([
+            'status' => 'success',
+            'user' => $student
+        ]);
+    }
+    public function logout()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out'
+        ])->cookie('token', '', -1); // expire cookie
+    }
     /**
      * Display the specified resource.
      */
