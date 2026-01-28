@@ -14,7 +14,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Inertia::render("Roles/Index",[
+        return Inertia::render("Roles/Index", [
             "roles" => Role::with("permissions")->get()
         ]);
     }
@@ -24,10 +24,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-                return Inertia::render("Roles/Create",[
-                    'permissions' => Permission::pluck("name")->all()
-                ]);
-
+        return Inertia::render("Roles/Create", [
+            'permissions' => Permission::pluck("name")->all()
+        ]);
     }
 
     /**
@@ -54,13 +53,10 @@ class RoleController extends Controller
     {
         $role = Role::find($id);
 
-        return Inertia::render("Roles/Show",[
+        return Inertia::render("Roles/Show", [
             "role" => $role,
-             "rolePermissions" => $role->permissions()->pluck("name")->all(),
+            "rolePermissions" => $role->permissions()->pluck("name")->all(),
         ]);
-
-
-
     }
 
     /**
@@ -69,7 +65,7 @@ class RoleController extends Controller
     public function edit(string $id)
     {
         $role = Role::find($id);
-        return Inertia::render("Roles/Edit",[
+        return Inertia::render("Roles/Edit", [
             "role" => $role,
             "rolePermissions" => $role->permissions()->pluck("name")->all(),
             "permissions" => Permission::pluck("name")->all()
@@ -81,7 +77,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
         $request->validate([
             "name" => "required",
             "permissions" => "required"
@@ -103,5 +99,12 @@ class RoleController extends Controller
         Role::destroy($id);
 
         return to_route('roles.index');
+    }
+
+    public function fetchAllRoles()
+    {
+        $roles = Role::all();
+
+        return response($roles);
     }
 }

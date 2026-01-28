@@ -41,6 +41,7 @@ Route::resource("users", UserController::class);
 // Roles Routes
 
 Route::resource("roles", RoleController::class);
+Route::get('/get-roles', [RoleController::class, "fetchAllRoles"]);
 
 // Route::resource("roles",RoleController::class)->only(['create','store'])->middleware("permission:roles.create");
 
