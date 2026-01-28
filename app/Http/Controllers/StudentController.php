@@ -83,10 +83,10 @@ class StudentController extends Controller
                     60 * 24 * 30,
                     '/',
                     null,
-                    true,   // ✅ Secure (must be true in production https)
-                    true,   // HttpOnly
+                    true,
+                    true,
                     false,
-                    'None'  // ✅ SameSite=None (required cross-site)
+                    'None'
                 );
             } else {
                 return response()->json([

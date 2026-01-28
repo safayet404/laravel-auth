@@ -88,6 +88,7 @@ Route::post("/students/{student}/documents", [StudentDocumentController::class, 
 // Interview
 
 Route::post('/interviews', [InterviewController::class, 'store']);
+Route::get('/interview-questions/{student}', [InterviewController::class, 'fetchQuestion']);
 
 Route::get('/interviews/all-interviews', [InterviewController::class, 'allInterviews']);
 
