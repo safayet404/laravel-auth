@@ -3,6 +3,7 @@
 use App\Http\Controllers\ComplianceMessageController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\InterviewRecordingController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentComplianceController;
 use App\Http\Controllers\StudentController;
@@ -104,5 +105,11 @@ Route::post("/int", [InterviewController::class, 'recordupload']);
 
 Route::get('/interviews/{interview}/compliance-message', [ComplianceMessageController::class, 'index']);
 Route::post('interviews/{interview}/compliance-message', [ComplianceMessageController::class, 'store']);
+
+
+// Permissions
+
+Route::get("/permissions", [PermissionController::class, 'getAllPermissions']);
+
 
 require __DIR__ . '/settings.php';

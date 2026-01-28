@@ -126,7 +126,8 @@ class InterviewController extends Controller
                     InterviewQuestion::create([
                         'interview_id' => $interview->id,
                         'order_index' => $idx,
-                        'type' => $q['text'] ?? '',
+                        'type' => $q['type'] ?? 'short',
+                        'question_text' => $q['text'] ?? '',
                         'prep_seconds' => (int)($q['prep_seconds'] ?? 12),
                         'answer_seconds' => (int)($q['answer_seconds'] ?? 45),
                         'rubric_json' => $q['rubric'] ?? null
