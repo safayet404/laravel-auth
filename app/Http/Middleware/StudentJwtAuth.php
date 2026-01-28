@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Helper\JWTToken;
 use App\Models\Student;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,46 +19,31 @@ class StudentJwtAuth
     public function handle(Request $request, Closure $next)
     {
         try {
-
             $token = $request->cookie('token');
-
-            if (!$token) {
-                return response()->json([
-                    'status'  => 'failed',
-                    'message' => 'Unauthorized'
-                ], 401);
-            }
-
             $decoded = JWTToken::VerifyToken($token);
 
-            if (!$decoded || empty($decoded->studentID)) {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Invalid token'
-
-                ], 401);
+            if ($decoded === 'unauthorized' || empty($decoded->userID)) {
+                return response()->json(['status' => 'failed', 'message' => 'Unauthorized'], 401);
             }
 
-
-            $student = Student::select('id', 'first_name', 'last_name', 'email')->find($decoded->studentID);
-
-            if (!$student) {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'User not found'
-                ], 401);
+            // Branching logic based on token type
+            if ($decoded->userType === 'student') {
+                $person = Student::find($decoded->userID);
+            } else {
+                $person = User::find($decoded->userID);
             }
 
-            $request->attributes->set('student', $student);
+            if (!$person) {
+                return response()->json(['status' => 'failed', 'message' => 'User not found'], 401);
+            }
 
-
+            // Set attributes for use in Controllers
+            $request->attributes->set('auth_user', $person);
+            $request->attributes->set('auth_type', $decoded->userType);
 
             return $next($request);
         } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Unauthorized'
-            ], 401);
+            return response()->json(['status' => 'failed', 'message' => 'Unauthorized'], 401);
         }
     }
 }

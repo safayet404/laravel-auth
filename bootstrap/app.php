@@ -28,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'student.jwt' => \App\Http\Middleware\StudentJwtAuth::class,
+            'auth.jwt' => \App\Http\Middleware\AuthMiddleware::class,
         ]);
 
         $middleware->web(append: [

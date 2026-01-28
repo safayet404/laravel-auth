@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComplianceMessageController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\InterviewRecordingController;
@@ -24,6 +25,11 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/health', fn() => 'OK');
+
+
+// Auth Routes
+
+Route::post('/unified-login', [AuthController::class, 'unifiedLogin']);
 
 
 

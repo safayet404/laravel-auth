@@ -45,12 +45,10 @@ class StudentController extends Controller
                 'password' => 'nullable|string|min:6',
             ]);
 
-            if (!empty($data['password'])) {
-                $data['password'] = Hash::make($data['password']);
-            }
+
 
             $student = Student::create($data);
-
+            $student->assignRole('Student');
             return response()->json(['status' => 'success', 'message' => 'Student Created', 'data' => $student]);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'failed', 'message' => $th->getMessage()]);

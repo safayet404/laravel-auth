@@ -8,15 +8,16 @@ use Firebase\JWT\Key;
 
 class JWTToken
 {
-    public static function CreateToken($studentEmail, $studentID)
+    public static function CreateToken($email, $id, $type)
     {
         $key = env('JWT_KEY');
         $payload = [
             'iss' => 'cas-token',
             'iat' => time(),
             'exp' => time() + 60 * 60 * 24 * 30,
-            'studentEmail' => $studentEmail,
-            'studentID' => $studentID,
+            'userEmail' => $email,
+            'userID' => $id,
+            'userType' => $type
 
         ];
 
