@@ -70,7 +70,6 @@ class StudentController extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => "User Login Successfull",
-
                     'token' => $token,
                     'student' => [
                         'id' => $student->id,
@@ -78,7 +77,17 @@ class StudentController extends Controller
                         'last_name' => $student->last_name,
                         'email' => $student->email,
                     ]
-                ])->cookie('token', $token, 60 * 24 * 30, '/', null, false, true, false, 'Lax');
+                ])->cookie(
+                    'token',
+                    $token,
+                    60 * 24 * 30,
+                    '/',
+                    null,
+                    true,   // ✅ Secure (must be true in production https)
+                    true,   // HttpOnly
+                    false,
+                    'None'  // ✅ SameSite=None (required cross-site)
+                );
             } else {
                 return response()->json([
                     'status' => 'failed',
@@ -95,7 +104,7 @@ class StudentController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'user' => $student
+            'student' => $student
         ]);
     }
     public function logout()
