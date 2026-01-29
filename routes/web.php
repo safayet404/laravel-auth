@@ -90,7 +90,7 @@ Route::post("/student-logout", [StudentController::class, 'logout']);
 
 // Student Compliance Profile
 
-Route::post('/students/{student}/compliance-profiles', [StudentComplianceController::class, 'store']);
+Route::post('/students/{student}/compliance-profiles', [StudentComplianceController::class, 'store'])->middleware('auth.jwt');
 Route::get('/students/compliance-profiles', [StudentComplianceController::class, 'index']);
 
 //  Student Documents Upload
@@ -99,7 +99,7 @@ Route::post("/students/{student}/documents", [StudentDocumentController::class, 
 
 // Interview
 
-Route::post('/interviews', [InterviewController::class, 'store']);
+Route::post('/interviews', [InterviewController::class, 'store'])->middleware('auth.jwt');
 Route::get('/interview-questions/{student}', [InterviewController::class, 'fetchQuestion']);
 
 Route::get('/interviews/all-interviews', [InterviewController::class, 'allInterviews']);

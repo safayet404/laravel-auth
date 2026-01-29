@@ -27,7 +27,7 @@ class StudentComplianceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,Student $student)
+    public function store(Request $request, Student $student)
     {
         try {
             $data = $request->validate([
@@ -41,16 +41,16 @@ class StudentComplianceController extends Controller
                 'notes' => 'nullable|string|max:5000',
             ]);
 
-            
+
 
             $profile = StudentComplianceProfile::create($data + [
                 'student_id' => $student->id,
                 'counselor_user_id' => $request->user()->id
             ]);
 
-            return response()->json(['status' => 'success' , 'message' => 'Student Compliance profile created','data' => $profile]);
+            return response()->json(['status' => 'success', 'message' => 'Student Compliance profile created', 'data' => $profile]);
         } catch (\Throwable $th) {
-            return response()->json(['status' => 'failed','message' => $th->getMessage()],500);
+            return response()->json(['status' => 'failed', 'message' => $th->getMessage()], 500);
         }
     }
 

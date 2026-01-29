@@ -34,6 +34,10 @@ class AuthMiddleware
             if (!$user) {
                 return response()->json(['message' => 'user not found'], 401);
             }
+
+            $request->setUserResolver(function () use ($user) {
+                return $user;
+            });
             $role = $user->getRoleNames()->first();
 
             $request->attributes->add([
