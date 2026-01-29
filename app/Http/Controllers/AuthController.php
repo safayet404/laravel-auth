@@ -56,10 +56,14 @@ class AuthController extends Controller
     {
         try {
             $user = $request->attributes->get('user');
+            $role = $request->attributes->get('role');
+            $type = $request->attributes->get('userType');
 
             return response()->json([
                 'status' => 'success',
                 'user' => $user,
+                'role' => $role,
+                'user_type' => $type,
             ]);
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());

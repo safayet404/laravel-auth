@@ -27,13 +27,22 @@ class AuthMiddleware
                 return response()->json(['message' => 'unauthorized'], 401);
             }
 
-            if ($result->userType === 'student') {
-                $user = Student::find($result->userID);
-            } else {
-                $user = User::find($result->userID);
-            }
+            $user = ($result->userType === 'student')
+                ? Student::find($result->userID)
+                : User::find($result->userID);
 
-            $request->attributes->add(['email' => $result->userEmail, 'id' => $result->userID, 'user' => $user]);
+            if (!$user) {
+                return response()->json(['message' => 'user not found'], 401);
+            }
+            $role = $user->getRoleNames()->first();
+
+            $request->attributes->add([
+                'email'    => $result->userEmail,
+                'id'       => $result->userID,
+                'user'     => $user->makeHidden('roles'),
+                'role'     => $role,
+                'userType' => $result->userType
+            ]);
 
             return $next($request);
         } catch (\Throwable $th) {
