@@ -66,4 +66,16 @@ class AuthController extends Controller
             return $this->error($th->getMessage());
         }
     }
+
+    public function logout(Request $request)
+    {
+        try {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Logged Out'
+            ])->cookie('token', '', -1);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
+    }
 }

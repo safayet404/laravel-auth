@@ -32,6 +32,7 @@ Route::get('/health', fn() => 'OK');
 
 Route::post('/unified-login', [AuthController::class, 'unifiedLogin']);
 Route::get('/profile', [AuthController::class, 'profile'])->middleware('auth.jwt');
+Route::post('/logout', [AuthController::class, 'logout']);
 // Route::middleware([AuthMiddleware::class])->group(function () {
 //     Route::get("/profile", [AuthController::class, 'profile']);
 // });

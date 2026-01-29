@@ -11,123 +11,125 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-      $user = User::with("roles")->get();
+  /**
+   * Display a listing of the resource.
+   */
+  public function index(Request $request)
+  {
+    $user = User::with("roles")->get();
 
-        return Inertia::render("Users/Index",[
-            "users" => $user,
+    return Inertia::render("Users/Index", [
+      "users" => $user,
 
-        ]);
-    }
+    ]);
+  }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render("Users/Create",[
-          "roles" => Role::pluck('name')->all()
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    return Inertia::render("Users/Create", [
+      "roles" => Role::pluck('name')->all()
 
-        ]);
-    }
+    ]);
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(Request $request)
+  {
+    try {
       $request->validate([
         'name' => 'required',
         'email' => 'required',
-        'password' => 'required'
+        'password' => 'required',
+        'roles'    => 'required|array'
       ]);
 
-      $user = User::create($request->only(['name','email'])  + ["password" => Hash::make($request->password) ] );
+      $user = User::create($request->only(['name', 'email'])  + ["password" => Hash::make($request->password)]);
 
       $user->syncRoles($request->roles);
 
+      return response()->json($user);
+    } catch (\Throwable $th) {
+      return $this->error($th->getMessage());
+    }
+  }
 
-      return to_route("users.index");
+  /**
+   * Display the specified resource.
+   */
+  public function show(string $id)
+  {
+    return Inertia::render("Users/Show", [
+      "user" => User::find($id)
+    ]);
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(string $id)
+
+  {
+    $user = User::find($id);
+    return Inertia::render("Users/Edit", [
+      "user" => $user,
+      "roles" => Role::pluck('name')->all(),
+      "userRoles" => $user->roles()->pluck("name")->all()
+
+    ]);
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, string $id)
+  {
+    $request->validate([
+      'name' => 'required',
+      'email' => 'required',
+    ]);
+
+    $user = User::find($id);
+    $user->name = $request->name;
+    $user->email = $request->email;
+
+    if ($request->password) {
+      $user->password = Hash::make($request->password);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-           return Inertia::render("Users/Show",[
-            "user" => User::find($id)
-        ]);
+    $user->save();
+    $user->syncRoles($request->roles);
+
+
+
+    return to_route("users.index");
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(string $id)
+  {
+    User::destroy($id);
+
+    // $user->delete();
+
+    return to_route("users.index");
+  }
+
+  public function allUsers()
+  {
+
+    try {
+      $users = User::with('roles')->get();
+
+      return  response()->json(['status' => 'success', 'data' => $users]);
+    } catch (\Throwable $th) {
+      return response()->json(['status' => 'failed', 'message' => $th->getMessage()]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-
-    {
-      $user = User::find($id);
-        return Inertia::render("Users/Edit",[
-            "user" => $user,
-            "roles" => Role::pluck('name')->all(),
-            "userRoles" => $user->roles()->pluck("name")->all()
-
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-          $request->validate([
-        'name' => 'required',
-        'email' => 'required',
-      ]);
-
-      $user = User::find($id);
-      $user->name = $request->name;
-      $user->email = $request->email;
-
-      if($request->password)
-      {
-        $user->password = Hash::make($request->password);
-      }
-
-      $user->save();
-      $user->syncRoles($request->roles);
-
-
-
-      return to_route("users.index");
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-     User::destroy($id);
-
-        // $user->delete();
-
-        return to_route("users.index");
-
-    }
-
-    public function allUsers(){
-     
-      try {
-         $users = User::with('roles')->get();
-
-      return  response()->json(['status' => 'success','data' => $users]);
-      } catch (\Throwable $th) {
-        return response()->json(['status' => 'failed','message' => $th->getMessage()]);
-      }
-    }
+  }
 }
