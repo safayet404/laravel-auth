@@ -16,17 +16,14 @@ class AuthController extends Controller
             $email = $request->input('email');
             $password = $request->input('password');
 
-            // 1. Check User table
             $person = User::where('email', $email)->first();
             $type = 'user';
 
-            // 2. If not found, check Student table
             if (!$person) {
                 $person = Student::where('email', $email)->first();
                 $type = 'student';
             }
 
-            // 3. CRITICAL: Check if $person exists before verifying password
             if ($person && Hash::check($password, $person->password)) {
 
                 $token = JWTToken::CreateToken($person->email, $person->id, $type);
@@ -37,14 +34,36 @@ class AuthController extends Controller
                     'user_type' => $type,
                     'role' => $person->getRoleNames()->first(),
                     'user' => $person
-                ], 200);
+                ])->cookie(
+                    'token',
+                    $token,
+                    60 * 24 * 30,
+                    '/',
+                    null,
+                    true,
+                    true,
+                    false,
+                    'None'
+                );;
             }
 
-            // If credentials don't match
             return response()->json(['status' => 'failed', 'message' => 'Invalid Email or Password'], 401);
         } catch (\Throwable $th) {
-            // Return the actual error message so you can see it in Postman
             return response()->json(['status' => 'error', 'message' => $th->getMessage()], 500);
+        }
+    }
+
+    public function profile(Request $request)
+    {
+        try {
+            $user = $request->attributes->get('user');
+
+            return response()->json([
+                'status' => 'success',
+                'user' => $user
+            ]);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
         }
     }
 }

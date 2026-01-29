@@ -10,6 +10,7 @@ use App\Http\Controllers\StudentComplianceController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentDocumentController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -30,8 +31,10 @@ Route::get('/health', fn() => 'OK');
 // Auth Routes
 
 Route::post('/unified-login', [AuthController::class, 'unifiedLogin']);
-
-
+Route::get('/profile', [AuthController::class, 'profile'])->middleware('auth.jwt');
+// Route::middleware([AuthMiddleware::class])->group(function () {
+//     Route::get("/profile", [AuthController::class, 'profile']);
+// });
 
 Route::get("all-users", [UserController::class, 'allUsers']);
 

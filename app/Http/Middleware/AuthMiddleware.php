@@ -18,22 +18,26 @@ class AuthMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->cookie('token');
+        try {
+            $token = $request->cookie('token');
 
-        $result = JWTToken::VerifyToken($token);
+            $result = JWTToken::VerifyToken($token);
 
-        if ($result == "unauthorized") {
-            return response()->json(['message' => 'unauthorized'], 401);
+            if ($result == "unauthorized") {
+                return response()->json(['message' => 'unauthorized'], 401);
+            }
+
+            if ($result->userType === 'student') {
+                $user = Student::find($result->userID);
+            } else {
+                $user = User::find($result->userID);
+            }
+
+            $request->attributes->add(['email' => $result->userEmail, 'id' => $result->userID, 'user' => $user]);
+
+            return $next($request);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
         }
-
-        if ($result->userType === 'student') {
-            $user = Student::find($result->userID);
-        } else {
-            $user = User::find($result->userID);
-        }
-
-        $request->attributes->add(['email' => $result->userEmail, 'id' => $result->userID, 'user' => $user]);
-
-        return $next($request);
     }
 }
