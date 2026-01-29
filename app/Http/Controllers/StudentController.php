@@ -44,9 +44,6 @@ class StudentController extends Controller
                 'dob' => 'nullable|date',
                 'password' => 'nullable|string|min:6',
             ]);
-
-
-
             $student = Student::create($data);
             $student->assignRole('Student');
             return response()->json(['status' => 'success', 'message' => 'Student Created', 'data' => $student]);

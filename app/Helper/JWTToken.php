@@ -17,7 +17,8 @@ class JWTToken
             'exp' => time() + 60 * 60 * 24 * 30,
             'userEmail' => $email,
             'userID' => $id,
-            'userType' => $type
+            'userType' => $type,
+
 
         ];
 

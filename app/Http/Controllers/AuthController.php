@@ -23,7 +23,6 @@ class AuthController extends Controller
                 $person = Student::where('email', $email)->first();
                 $type = 'student';
             }
-
             if ($person && Hash::check($password, $person->password)) {
 
                 $token = JWTToken::CreateToken($person->email, $person->id, $type);
@@ -33,7 +32,7 @@ class AuthController extends Controller
                     'token' => $token,
                     'user_type' => $type,
                     'role' => $person->getRoleNames()->first(),
-                    'user' => $person
+                    'user' => $person->makeHidden('roles')
                 ])->cookie(
                     'token',
                     $token,
@@ -60,7 +59,7 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'user' => $user
+                'user' => $user,
             ]);
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
