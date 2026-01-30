@@ -95,7 +95,7 @@ Route::get('/students/compliance-profiles', [StudentComplianceController::class,
 
 //  Student Documents Upload
 
-Route::post("/students/{student}/documents", [StudentDocumentController::class, 'store']);
+Route::post("/students/{student}/documents", [StudentDocumentController::class, 'store'])->middleware('auth.jwt');
 
 // Interview
 
