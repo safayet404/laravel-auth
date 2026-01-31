@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\JWTToken;
+use App\Http\Resources\StudentResource;
 use App\Models\Student;
 use Exception;
 use Illuminate\Http\Request;
@@ -114,8 +115,9 @@ class StudentController extends Controller
     {
         try {
             $per_page = $request->query('per_page', 10);
-            $students = Student::paginate($per_page);
-            return response()->json(['message' => 'success', $students]);
+            $students = Student::with('complianceProfiles.counselor')->latest()->paginate($per_page);
+
+            return StudentResource::collection($students);
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
         }
