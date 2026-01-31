@@ -34,7 +34,7 @@ class StudentResource extends JsonResource
                     'counselor_email' => $profile->counselor->email ?? "N/A",
                 ];
             }),
-            'created_at' => $this->created_at->format('Y-m-d'),
+            'created_at' => $this->created_at->format('Y-m-d h:i A'),
 
         ];
     }
