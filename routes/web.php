@@ -87,7 +87,8 @@ Route::resource("student", StudentController::class);
 Route::post("/student-login", [StudentController::class, 'studentLogin']);
 Route::get("/student-profile", [StudentController::class, 'me'])->middleware('student.jwt');
 Route::post("/student-logout", [StudentController::class, 'logout']);
-
+Route::get("/student", [StudentController::class, 'me'])->middleware('student.jwt');
+Route::get("/fetch-students", [StudentController::class, 'fetchAllStudent']);
 // Student Compliance Profile
 
 Route::post('/students/{student}/compliance-profiles', [StudentComplianceController::class, 'store'])->middleware('auth.jwt');

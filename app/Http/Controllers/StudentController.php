@@ -109,6 +109,17 @@ class StudentController extends Controller
             'message' => 'Logged out'
         ])->cookie('token', '', -1); // expire cookie
     }
+
+    public function fetchAllStudent(Request $request)
+    {
+        try {
+            $per_page = $request->query('per_page', 10);
+            $students = Student::paginate($per_page);
+            return response()->json(['message' => 'success', $students]);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
+    }
     /**
      * Display the specified resource.
      */
