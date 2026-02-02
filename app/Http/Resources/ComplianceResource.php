@@ -62,6 +62,8 @@ class ComplianceResource extends JsonResource
                 ];
             }),
 
+            'created_at' => $this->created_at->toIso8601String(),
+
 
         ];
     }
