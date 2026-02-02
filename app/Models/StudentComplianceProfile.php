@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentComplianceProfile extends Model
 {
-    protected $fillable = ['student_id', 'counselor_user_id', 'institution', 'program', 'intake', 'tution_fee', 'scholarship', 'paid_amount', 'remaining_amount', 'remaining_amount', 'notes'];
+    protected $fillable = ['student_id', 'counselor_user_id', 'institution', 'program', 'intake', 'tuition_fee', 'scholarship', 'paid_amount', 'remaining_amount', 'remaining_amount', 'notes'];
 
 
     public function student()
