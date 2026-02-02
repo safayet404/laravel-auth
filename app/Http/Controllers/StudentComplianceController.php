@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ComplianceResource;
 use App\Models\Student;
 use App\Models\StudentComplianceProfile;
 use Illuminate\Http\Request;
@@ -11,9 +12,16 @@ class StudentComplianceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return StudentComplianceProfile::all();
+        try {
+            $peer_page = $request->query('peer_page', 10);
+            $profiles = StudentComplianceProfile::with('student', 'counselor', 'interviews.questions')->latest()->paginate($peer_page);
+
+            return ComplianceResource::collection($profiles);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
     }
 
     /**
@@ -21,7 +29,10 @@ class StudentComplianceController extends Controller
      */
     public function create()
     {
-        //
+        try {
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**

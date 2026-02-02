@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173'], // Must match your Vue URL exactly
+    'allowed_origins' => ['http://localhost:5173', 'https://cas-interview.vercel.app'], // Must match your Vue URL exactly
 
     'allowed_origins_patterns' => [],
 

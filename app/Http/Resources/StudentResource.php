@@ -31,7 +31,7 @@ class StudentResource extends JsonResource
                     'uploaded_at' => $this->created_at->toIso8601String()
                 ];
             }),
-            'interviews' => $this->interviews,
+            // 'interviews' => $this->interviews,
             'profiles' => $this->complianceProfiles->map(function ($profile) {
                 return [
                     'profile_id' => $profile->id,
@@ -45,6 +45,22 @@ class StudentResource extends JsonResource
                     'notes' => $profile->notes,
                     'counselor_name' => $profile->counselor->name ?? "N/A",
                     'counselor_email' => $profile->counselor->email ?? "N/A",
+                ];
+            }),
+            'interviews' => $this->interviews->map(function ($interview) {
+                return [
+                    'id' => $interview->id,
+                    'status' => $interview->status,
+                    'created_at' => $interview->created_at->toIso8601String(),
+                    // Map the questions for this specific interview
+                    'questions' => $interview->questions->map(function ($question) {
+                        return [
+                            'id' => $question->id,
+                            'text' => $question->question_text,
+                            'status' => $question->status,
+                            'type' => $question->type
+                        ];
+                    })
                 ];
             }),
             'created_at' => $this->created_at->toIso8601String(),
