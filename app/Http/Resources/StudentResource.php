@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class StudentResource extends JsonResource
 {
@@ -19,6 +20,18 @@ class StudentResource extends JsonResource
             'full_name' => $this->first_name . ' ' . $this->last_name,
             'email' => $this->email,
             'dob' => $this->dob,
+            'documents' => $this->documents->map(function ($doc) {
+                return [
+                    'id' => $doc->id,
+                    'file_name' => $doc->original_name,
+                    'file_type' => $doc->mime,
+                    'file_size' => round($doc->size / 1024, 2) . ' KB',
+                    'url' => $doc->path,
+
+                    'uploaded_at' => $this->created_at->toIso8601String()
+                ];
+            }),
+            'interviews' => $this->interviews,
             'profiles' => $this->complianceProfiles->map(function ($profile) {
                 return [
                     'profile_id' => $profile->id,
@@ -34,7 +47,7 @@ class StudentResource extends JsonResource
                     'counselor_email' => $profile->counselor->email ?? "N/A",
                 ];
             }),
-            'created_at' => $this->created_at->format('Y-m-d h:i A'),
+            'created_at' => $this->created_at->toIso8601String(),
 
         ];
     }

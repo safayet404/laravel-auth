@@ -115,7 +115,7 @@ class StudentController extends Controller
     {
         try {
             $per_page = $request->query('per_page', 10);
-            $students = Student::with('complianceProfiles.counselor')->latest()->paginate($per_page);
+            $students = Student::with('complianceProfiles.counselor', 'documents', 'interviews.questions')->latest()->paginate($per_page);
 
             return StudentResource::collection($students);
         } catch (\Throwable $th) {
