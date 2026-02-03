@@ -39,13 +39,14 @@ class ComplianceResource extends JsonResource
                     'interview_id' => $interview->id,
                     'status' => $interview->status,
                     'created_at' => $interview->created_at->toIso8601String(),
-                    // Map the questions for this specific interview
                     'questions' => $interview->questions->map(function ($question) {
                         return [
                             'question_id' => $question->id,
                             'text' => $question->question_text,
                             'status' => $question->status,
-                            'type' => $question->type
+                            'type' => $question->type,
+                            'prep_seconds' => $question->prep_seconds,
+                            'answer_seconds' => $question->answer_seconds,
                         ];
                     })
                 ];
