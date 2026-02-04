@@ -111,6 +111,8 @@ Route::post('/interviews/{interview}/generate-questions', [InterviewController::
 Route::post('/interviews/{interview}/start', [InterviewController::class, 'start']);
 
 Route::post('/interviews/{interview}/recording', [InterviewRecordingController::class, 'upload']);
+Route::post('/interview-questions/{question}/recording', [InterviewRecordingController::class, 'upload']);
+
 
 Route::post("/int", [InterviewController::class, 'recordupload']);
 

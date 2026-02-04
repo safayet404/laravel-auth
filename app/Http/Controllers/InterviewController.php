@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\QuestionResource;
 use App\Models\Interview;
 use App\Models\InterviewQuestion;
 use App\Models\Student;
@@ -204,15 +205,31 @@ class InterviewController extends Controller
     public function fetchQuestion(Student $student)
     {
         try {
-            $interview = Interview::where('student_id', $student->id)->with('questions')->first();
+
+            $interview = Interview::where('student_id', $student->id)
+                ->with('questions')
+                ->first();
+
 
             if (!$interview) {
-                return $this->error("No Interview found");
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => "No interview has been initialized for Student #{$student->id}."
+                ], 404);
             }
 
-            return $interview->questions;
+
+
+            return response()->json([
+                'status' => 'success',
+                'interview_status' => $interview->status, // Pulling status from the Interview model
+                'data' => QuestionResource::collection($interview->questions)
+            ], 200);
         } catch (\Throwable $th) {
-            return $this->error($th->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ], 500);
         }
     }
 }

@@ -32,10 +32,8 @@ class GeminiLlmProvider implements LlmProviderInterface
             required: ['key_points', 'concerns', 'consistency']
         );
 
-        // Call the model (Updating to gemini-2.5-flash for 2026 stability)
         $result = Gemini::generativeModel(model: 'gemini-2.5-flash')
             ->withGenerationConfig(new GenerationConfig(
-                // Use the Enum here to fix the "Expected type" error
                 responseMimeType: ResponseMimeType::APPLICATION_JSON,
                 responseSchema: $schema
             ))
