@@ -24,6 +24,18 @@ class StudentComplianceController extends Controller
         }
     }
 
+    public function test(Request $request)
+    {
+        try {
+            $peer_page = $request->query('peer_page', 10);
+            $profiles = StudentComplianceProfile::with('student', 'counselor', 'interviews.questions')->latest()->paginate($peer_page);
+
+            return response()->json($profiles);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */

@@ -161,5 +161,51 @@ Route::post('/debug/interviews/{question}/finalize', function (\App\Models\Inter
     }
 });
 
+use App\Models\InterviewQuestion;
+use App\Jobs\GenerateInterviewPdfIfReadyJob;
+use Illuminate\Support\Facades\Storage;
+
+Route::post('/debug/questions/{question}/pdf', function (InterviewQuestion $question) {
+    try {
+        // Run synchronously so Postman sees errors immediately
+        GenerateInterviewPdfIfReadyJob::dispatchSync($question->id);
+
+        // Reload interview to check if report_path was set
+        $interview = $question->interview()->with(['questions'])->first();
+
+        if (!$interview?->report_path) {
+            return response()->json([
+                'ok' => true,
+                'pdf_generated' => false,
+                'reason' => 'Not all questions are completed yet',
+                'statuses' => $interview?->questions?->map(fn($q) => [
+                    'id' => $q->id,
+                    'order_index' => $q->order_index,
+                    'status' => $q->status,
+                ])->values(),
+            ]);
+        }
+
+        return response()->json([
+            'ok' => true,
+            'pdf_generated' => true,
+            'report_path' => $interview->report_path,
+            'public_url' => Storage::disk('public')->url($interview->report_path),
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'ok' => false,
+            'error' => $e->getMessage(),
+            'class' => get_class($e),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->take(10),
+        ], 500);
+    }
+});
+
+
+
+Route::get("/compliance-test", [StudentComplianceController::class, 'test']);
 
 require __DIR__ . '/settings.php';
