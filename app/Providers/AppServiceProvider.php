@@ -17,8 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(SttProviderInterface::class, WhisperSttProvider::class);
-        $this->app->bind(LlmProviderInterface::class, GeminiLlmProvider::class);
+        $this->app->singleton(SttProviderInterface::class, WhisperSttProvider::class);
+        $this->app->singleton(LlmProviderInterface::class, GeminiLlmProvider::class);
     }
 
     /**

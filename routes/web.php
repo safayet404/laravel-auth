@@ -110,8 +110,9 @@ Route::get('/interviews/{interview}', [InterviewController::class, 'show']);
 Route::post('/interviews/{interview}/generate-questions', [InterviewController::class, 'generateQuestions']);
 Route::post('/interviews/{interview}/start', [InterviewController::class, 'start']);
 
-Route::post('/interviews/{interview}/recording', [InterviewRecordingController::class, 'upload']);
-Route::post('/interview-questions/{question}/recording', [InterviewRecordingController::class, 'upload']);
+// Route::post('/interviews/{interview}/recording', [InterviewRecordingController::class, 'upload']);
+// Route::post('/interview-questions/{question}/recording', [InterviewRecordingController::class, 'upload']);
+Route::post('upload-question/{question}', [InterviewRecordingController::class, 'upload']);
 
 
 Route::post("/int", [InterviewController::class, 'recordupload']);
