@@ -127,4 +127,39 @@ Route::post('interviews/{interview}/compliance-message', [ComplianceMessageContr
 Route::get("/permissions", [PermissionController::class, 'getAllPermissions']);
 
 
+
+Route::post('/debug/questions/{question}/summarize', function (\App\Models\InterviewQuestion $question) {
+    try {
+        \App\Jobs\SummarizeQuestionJob::dispatchSync($question->id);
+        return response()->json(['ok' => true]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'class' => get_class($e),
+            'file'  => $e->getFile(),
+            'line'  => $e->getLine(),
+            // Don't keep trace in production; ok for local debug:
+            'trace' => collect($e->getTrace())->take(8),
+        ], 500);
+    }
+});
+
+Route::post('/debug/interviews/{question}/finalize', function (\App\Models\InterviewQuestion $question) {
+
+    try {
+        \App\Jobs\FinalizeInterviewReportJob::dispatchSync($question->id);
+
+        return response()->json(['ok' => true]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'error' => $e->getMessage(),
+            'class' => get_class($e),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->take(8),
+        ], 500);
+    }
+});
+
+
 require __DIR__ . '/settings.php';

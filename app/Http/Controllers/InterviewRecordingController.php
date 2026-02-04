@@ -23,7 +23,7 @@ class InterviewRecordingController extends Controller
             }
 
             $request->validate([
-                'recording' => 'required|file|max:512000',
+                'recording' => 'required',
             ]);
 
             $file = $request->file('recording');

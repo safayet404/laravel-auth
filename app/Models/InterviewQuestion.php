@@ -15,7 +15,7 @@ class InterviewQuestion extends Model
         'completed_at' => 'datetime',
     ];
 
-    public function interviews()
+    public function interview()
     {
         return $this->belongsTo(Interview::class);
     }
