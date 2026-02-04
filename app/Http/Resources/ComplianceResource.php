@@ -40,6 +40,7 @@ class ComplianceResource extends JsonResource
                     'status' => $interview->status,
                     'created_at' => $interview->created_at->toIso8601String(),
                     'questions' => $interview->questions->map(function ($question) {
+                        $summaryData = $question->ai_summary_json ?? [];
                         return [
                             'question_id' => $question->id,
                             'text' => $question->question_text,
@@ -47,6 +48,13 @@ class ComplianceResource extends JsonResource
                             'type' => $question->type,
                             'prep_seconds' => $question->prep_seconds,
                             'answer_seconds' => $question->answer_seconds,
+                            'transcript' => $question->transcript_text, // Note: your data uses transcript_text
+
+                            // Extract from the JSON object
+                            'summary' => $summaryData['concerns'] ?? [],
+                            'key_points' => $summaryData['key_points'] ?? [],
+                            'consistency' => $summaryData['consistency'] ?? 'N/A',
+
                         ];
                     })
                 ];
