@@ -39,6 +39,8 @@ class ComplianceResource extends JsonResource
                     'interview_id' => $interview->id,
                     'status' => $interview->status,
                     'created_at' => $interview->created_at->toIso8601String(),
+                    'report_path' => $interview->report_path,
+
                     'questions' => $interview->questions->map(function ($question) {
                         $summaryData = $question->ai_summary_json ?? [];
                         return [
