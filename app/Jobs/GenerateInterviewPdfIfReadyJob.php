@@ -13,7 +13,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class GenerateInterviewPdfIfReadyJob implements ShouldQueue
 {
-    use Dispatchable;
+    use Dispatchable, Queueable;
 
     public function __construct(public int $questionId) {}
 
