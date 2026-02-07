@@ -28,10 +28,12 @@
         .meta-table {
             width: 100%;
             margin-bottom: 20px;
+            border-collapse: collapse;
         }
 
         .meta-table td {
             padding: 5px 0;
+            border-bottom: 1px solid #f3f4f6;
         }
 
         .label {
@@ -50,18 +52,11 @@
             page-break-inside: avoid;
         }
 
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #f3f4f6;
-            padding-bottom: 5px;
-        }
-
         .q-num {
             font-weight: 900;
             color: #4f46e5;
             font-size: 14px;
+            margin-right: 10px;
         }
 
         .transcript-section {
@@ -71,17 +66,7 @@
             margin: 10px 0;
             border-left: 3px solid #d1d5db;
             font-style: italic;
-        }
-
-        .ai-grid {
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .ai-column {
-            vertical-align: top;
-            width: 50%;
-            padding-right: 10px;
+            color: #4b5563;
         }
 
         .section-title {
@@ -93,23 +78,13 @@
             display: block;
         }
 
-        ul {
-            margin: 0;
-            padding-left: 15px;
-        }
-
-        li {
-            margin-bottom: 4px;
-            color: #4b5563;
-        }
-
-        /* Badges */
         .badge {
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
             font-weight: bold;
             text-transform: uppercase;
+            float: right;
         }
 
         .concerning {
@@ -122,9 +97,27 @@
             color: #15803d;
         }
 
-        .unclear {
-            background-color: #fef9c3;
-            color: #854d0e;
+        .ai-grid {
+            width: 100%;
+            margin-top: 10px;
+            table-layout: fixed;
+        }
+
+        .ai-column {
+            vertical-align: top;
+            width: 50%;
+            padding-right: 10px;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 15px;
+        }
+
+        li {
+            margin-bottom: 4px;
+            color: #4b5563;
+            font-size: 11px;
         }
     </style>
 </head>
@@ -151,36 +144,29 @@
 
     @foreach(($report['interviews'][0]['questions'] ?? []) as $index => $q)
     <div class="question-box">
-        <div class="question-header">
-            <span class="q-num">Q{{ $index + 1 }}</span>
-            <span class="badge {{ $q['consistency'] ?? 'unclear' }}">
-                Consistency: {{ $q['consistency'] ?? 'N/A' }}
-            </span>
-        </div>
+        <span class="badge {{ $q['consistency'] ?? 'unclear' }}">Consistency: {{ $q['consistency'] ?? 'N/A' }}</span>
+        <span class="q-num">Q{{ $index + 1 }}</span>
+        <div style="margin-top: 5px; font-weight: bold;">{{ $q['text'] }}</div>
 
-        <div style="margin-bottom: 10px;">
-            <strong>{{ $q['text'] }}</strong>
-        </div>
-
-        <span class="section-title">Student Response (Transcript)</span>
         <div class="transcript-section">
-            "{{ $q['transcript'] }}"
+            <span class="section-title" style="color:#666">Student Transcript</span>
+            "{{ $q['transcript'] ?? 'No transcript available' }}"
         </div>
 
         <table class="ai-grid">
             <tr>
                 <td class="ai-column">
-                    <span class="section-title">AI Summary & Concerns</span>
+                    <span class="section-title">AI Summary & Observations</span>
                     <ul>
-                        @foreach($q['summary'] as $point)
+                        @foreach(($q['summary'] ?? []) as $point)
                         <li>{{ $point }}</li>
                         @endforeach
                     </ul>
                 </td>
                 <td class="ai-column">
-                    <span class="section-title">Key Points Extracted</span>
+                    <span class="section-title">Key Facts Extracted</span>
                     <ul>
-                        @foreach($q['key_points'] as $kp)
+                        @foreach(($q['key_points'] ?? []) as $kp)
                         <li>{{ $kp }}</li>
                         @endforeach
                     </ul>
