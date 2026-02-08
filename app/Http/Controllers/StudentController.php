@@ -153,4 +153,30 @@ class StudentController extends Controller
     {
         //
     }
+
+    public function fetchStudents()
+    {
+        try {
+            $students = Student::select('id', 'first_name', 'last_name', 'email')->get();
+
+            // Transform the collection
+            $data = $students->map(function ($student) {
+                return [
+                    'id'    => $student->id,
+                    'name'  => $student->first_name . ' ' . $student->last_name,
+                    'email' => $student->email,
+                ];
+            });
+
+            return response()->json([
+                'message' => 'success',
+                'data'    => $data
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status'  => 'failed',
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
 }
