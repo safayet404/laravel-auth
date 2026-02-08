@@ -43,7 +43,7 @@
             padding: 20px;
             background-color: #4f46e5;
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: #ffffff !important;
+            color: #3F2CC8 !important;
             margin-bottom: 15px;
         }
 
@@ -51,11 +51,11 @@
             margin: 0;
             font-size: 20px;
             font-weight: bold;
-            color: #ffffff !important;
+            color: #3F2CC8 !important;
         }
 
         .h-sub {
-            color: #ffffff !important;
+            color: #3F2CC8 !important;
             opacity: 0.9;
             font-size: 11px;
             margin-top: 4px;
