@@ -1,180 +1,275 @@
-<!doctype html>
-<html>
+{{-- resources/views/reports/interview_per_question.blade.php --}}
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8" />
+    <title>Interview Assessment Report</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        @page {
+            margin: 20px;
+        }
+
+        html,
         body {
-            font-family: 'Helvetica', sans-serif;
-            font-size: 12px;
-            color: #333;
-            line-height: 1.5;
-            margin: 30px;
-        }
-
-        .header {
-            border-bottom: 2px solid #4f46e5;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            color: #4f46e5;
+            font-family: 'DejaVu Sans', sans-serif;
+            /* Required for symbol support */
             margin: 0;
-            font-size: 22px;
-            text-transform: uppercase;
+            padding: 0;
+            color: #0f172a;
+            background: #ffffff;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
-        .meta-table {
+        .page-wrapper {
             width: 100%;
-            margin-bottom: 20px;
-            border-collapse: collapse;
+            padding: 0;
+            margin: 0;
         }
 
-        .meta-table td {
-            padding: 5px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .label {
-            font-weight: bold;
-            color: #666;
-            width: 120px;
-            text-transform: uppercase;
-            font-size: 10px;
-        }
-
-        .question-box {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
+        .no-break {
             page-break-inside: avoid;
         }
 
-        .q-num {
-            font-weight: 900;
-            color: #4f46e5;
-            font-size: 14px;
-            margin-right: 10px;
+        /* Header with solid fallback for visibility */
+        .header {
+            border-radius: 15px;
+            padding: 20px;
+            background-color: #4f46e5;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: #ffffff !important;
+            margin-bottom: 15px;
         }
 
-        .transcript-section {
-            background: #f9fafb;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-            border-left: 3px solid #d1d5db;
-            font-style: italic;
-            color: #4b5563;
-        }
-
-        .section-title {
-            font-size: 10px;
+        .h-title {
+            margin: 0;
+            font-size: 20px;
             font-weight: bold;
-            color: #4f46e5;
-            text-transform: uppercase;
-            margin-bottom: 5px;
-            display: block;
+            color: #ffffff !important;
+        }
+
+        .h-sub {
+            color: #ffffff !important;
+            opacity: 0.9;
+            font-size: 11px;
+            margin-top: 4px;
         }
 
         .badge {
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 9px;
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
             font-weight: bold;
             text-transform: uppercase;
-            float: right;
+            font-size: 10px;
         }
 
-        .concerning {
-            background-color: #fee2e2;
-            color: #b91c1c;
+        .badge-danger {
+            background: #fee2e2;
+            color: #dc2626;
         }
 
-        .clear {
-            background-color: #dcfce7;
-            color: #15803d;
+        .badge-success {
+            background: #dcfce7;
+            color: #16a34a;
         }
 
-        .ai-grid {
+        .badge-warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .info-grid {
+            margin-bottom: 15px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .info-table {
             width: 100%;
-            margin-top: 10px;
-            table-layout: fixed;
+            border-collapse: collapse;
         }
 
-        .ai-column {
+        .info-table td {
+            padding: 6px;
+            border-bottom: 1px solid #e2e8f0;
             vertical-align: top;
-            width: 50%;
-            padding-right: 10px;
         }
 
-        ul {
-            margin: 0;
-            padding-left: 15px;
+        .label {
+            color: #64748b;
+            font-weight: bold;
+            font-size: 9px;
+            text-transform: uppercase;
+            width: 110px;
         }
 
-        li {
-            margin-bottom: 4px;
-            color: #4b5563;
-            font-size: 11px;
+        .value {
+            color: #0f172a;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .q-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+
+        .transcript-box {
+            background: #fdf2f8;
+            border-left: 3px solid #db2777;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .ai-box {
+            background: #f0fdf4;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #dcfce7;
+        }
+
+        .fact-box {
+            background: #eff6ff;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #dbeafe;
         }
     </style>
 </head>
 
 <body>
-    <div class="header">
-        <h1>Interview Assessment Report</h1>
-    </div>
+    <div class="page-wrapper">
+        @php
+        $studentName = trim(($report['student']['first_name'] ?? '') . ' ' . ($report['student']['last_name'] ?? ''));
+        $cp = $report['compliance_profile'] ?? [];
+        $questions = $report['questions'] ?? [];
+        $concerning = collect($questions)->filter(fn($q) => strtolower($q['ai_summary_json']['consistency'] ?? '') === 'concerning')->count();
+        $total = count($questions);
 
-    <table class="meta-table">
-        <tr>
-            <td class="label">Student:</td>
-            <td>{{ $report['student']['full_name'] ?? 'N/A' }}</td>
-            <td class="label">Intake:</td>
-            <td>{{ $report['intake'] ?? 'N/A' }}</td>
-        </tr>
-        <tr>
-            <td class="label">Institution:</td>
-            <td>{{ $report['institution'] ?? 'N/A' }}</td>
-            <td class="label">Program:</td>
-            <td>{{ $report['program'] ?? 'N/A' }}</td>
-        </tr>
-    </table>
+        // Use HTML Entity Codes for Result Icons
+        $overallStatus = $concerning > 0
+        ? ($concerning > ($total/2) ? 'High Concern &#128680;' : 'Mixed &#9888;')
+        : 'Excellent &#9989;';
+        $overallClass = $concerning > 0 ? ($concerning > ($total/2) ? 'badge-danger' : 'badge-warning') : 'badge-success';
+        @endphp
 
-    @foreach(($report['interviews'][0]['questions'] ?? []) as $index => $q)
-    <div class="question-box">
-        <span class="badge {{ $q['consistency'] ?? 'unclear' }}">Consistency: {{ $q['consistency'] ?? 'N/A' }}</span>
-        <span class="q-num">Q{{ $index + 1 }}</span>
-        <div style="margin-top: 5px; font-weight: bold;">{{ $q['text'] }}</div>
-
-        <div class="transcript-section">
-            <span class="section-title" style="color:#666">Student Transcript</span>
-            "{{ $q['transcript'] ?? 'No transcript available' }}"
+        <div class="header no-break">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <div class="h-title">&#127891; Interview Assessment</div>
+                        <div class="h-sub">Detailed Compliance Review &#38; Analysis</div>
+                    </td>
+                    <td style="text-align:right;">
+                        <span class="badge {{ $overallClass }}" style="background: #ffffff;">
+                            Result: {!! $overallStatus !!}
+                        </span>
+                    </td>
+                </tr>
+            </table>
         </div>
 
-        <table class="ai-grid">
+        <div class="info-grid no-break">
+            <table class="info-table">
+                <tr>
+                    <td class="label">&#128100; Student</td>
+                    <td class="value">{{ $studentName }}</td>
+                    <td class="label">&#128197; Intake</td>
+                    <td class="value">{{ $cp['intake'] ?? 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">&#127979; Institution</td>
+                    <td class="value">{{ $cp['institution'] ?? 'N/A' }}</td>
+                    <td class="label">&#128214; Program</td>
+                    <td class="value">{{ $cp['program'] ?? 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">&#128181; Tuition / Paid</td>
+                    <td class="value">£{{ $cp['tuition_fee'] ?? '0' }} / £{{ $cp['paid_amount'] ?? '0' }}</td>
+                    <td class="label">&#9888; Remaining</td>
+                    <td class="value" style="color:#dc2626;">£{{ $cp['remaining_amount'] ?? '0' }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <table style="width: 100%; border-spacing: 10px; margin-bottom: 10px;">
             <tr>
-                <td class="ai-column">
-                    <span class="section-title">AI Summary & Observations</span>
-                    <ul>
-                        @foreach(($q['summary'] ?? []) as $point)
-                        <li>{{ $point }}</li>
-                        @endforeach
-                    </ul>
+                <td class="stat-card">
+                    <span style="font-size: 18px; font-weight: bold;">&#128269; {{ $total }}</span><br>
+                    <span style="font-size: 10px; color: #64748b;">Total Questions</span>
                 </td>
-                <td class="ai-column">
-                    <span class="section-title">Key Facts Extracted</span>
-                    <ul>
-                        @foreach(($q['key_points'] ?? []) as $kp)
-                        <li>{{ $kp }}</li>
-                        @endforeach
-                    </ul>
+                <td class="stat-card">
+                    <span style="font-size: 18px; font-weight: bold; color:#dc2626;">&#128681; {{ $concerning }}</span><br>
+                    <span style="font-size: 10px; color: #64748b;">Flags Found</span>
+                </td>
+                <td class="stat-card">
+                    <span style="font-size: 18px; font-weight: bold; color:#16a34a;">&#9989; {{ $total - $concerning }}</span><br>
+                    <span style="font-size: 10px; color: #64748b;">Clear Responses</span>
                 </td>
             </tr>
         </table>
+
+        @foreach($questions as $index => $q)
+        <div class="q-card no-break">
+            <div style="font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px;">
+                Q{{ $index + 1 }}: {{ $q['question_text'] }}
+            </div>
+            <div class="transcript-box">
+                <strong>&#127881; Student Said:</strong> "{{ $q['transcript_text'] }}"
+            </div>
+            <table style="width: 100%; border-spacing: 5px;">
+                <tr>
+                    <td style="width: 50%; vertical-align: top;">
+                        <div class="ai-box">
+                            <div style="font-weight: bold; font-size: 10px; color: #166534;">&#129302; AI OBSERVATIONS</div>
+                            <ul style="margin: 5px 0; padding-left: 15px; font-size: 10px;">
+                                @foreach($q['ai_summary_json']['concerns'] ?? [] as $c)
+                                <li>{{ $c }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </td>
+                    <td style="width: 50%; vertical-align: top;">
+                        <div class="fact-box">
+                            <div style="font-weight: bold; font-size: 10px; color: #1e40af;">&#128204; EXTRACTED FACTS</div>
+                            <ul style="margin: 5px 0; padding-left: 15px; font-size: 10px;">
+                                @foreach($q['ai_summary_json']['key_points'] ?? [] as $f)
+                                <li>{{ $f }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @endforeach
+
+        <div style="text-align: center; font-size: 9px; color: #94a3b8; margin-top: 20px;">
+            &#128274; Confidential Report Generated on {{ now()->format('M d, Y H:i') }}
+        </div>
     </div>
-    @endforeach
 </body>
 
 </html>

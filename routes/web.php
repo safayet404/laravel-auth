@@ -163,6 +163,7 @@ Route::post('/debug/interviews/{question}/finalize', function (\App\Models\Inter
 
 use App\Models\InterviewQuestion;
 use App\Jobs\GenerateInterviewPdfIfReadyJob;
+use App\Models\Interview;
 use Illuminate\Support\Facades\Storage;
 
 Route::post('/debug/questions/{question}/pdf', function (InterviewQuestion $question) {
@@ -208,4 +209,8 @@ Route::post('/debug/questions/{question}/pdf', function (InterviewQuestion $ques
 
 Route::get("/compliance-test", [StudentComplianceController::class, 'test']);
 
+Route::get("/get-data/{id}", function ($id) {
+    return Interview::with(['student', 'complianceProfile', 'questions'])
+        ->findOrFail($id);
+});
 require __DIR__ . '/settings.php';

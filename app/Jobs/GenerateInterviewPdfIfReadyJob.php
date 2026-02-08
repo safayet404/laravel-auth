@@ -27,7 +27,7 @@ class GenerateInterviewPdfIfReadyJob implements ShouldQueue
 
         $data = [
             'interview' => $interview,
-            'report' => $interview->ai_report_json,
+            'report' => $interview->toArray(),  // <-- this includes student, compliance_profile, questions, updated_at, etc.
         ];
 
         $pdf = Pdf::loadView('reports.interview_per_question', $data);
