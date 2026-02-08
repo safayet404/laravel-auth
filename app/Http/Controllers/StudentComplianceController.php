@@ -7,7 +7,6 @@ use App\Models\Student;
 use App\Models\StudentComplianceProfile;
 use Illuminate\Http\Request;
 
-use function PHPSTORM_META\map;
 
 class StudentComplianceController extends Controller
 {
