@@ -222,7 +222,7 @@ class InterviewController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'interview_status' => $interview->status, // Pulling status from the Interview model
+                'interview_status' => $interview->status,
                 'data' => QuestionResource::collection($interview->questions)
             ], 200);
         } catch (\Throwable $th) {
@@ -230,6 +230,32 @@ class InterviewController extends Controller
                 'status' => 'error',
                 'message' => $th->getMessage()
             ], 500);
+        }
+    }
+
+    public function fetchQuestionByInterview(Interview $interview)
+    {
+        try {
+            $interview = Interview::where('id', $interview->id)
+                ->with('questions')
+                ->first();
+
+            if (!$interview) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => "No interview has been initialized for Student #{$interview->id}."
+                ], 404);
+            }
+
+
+
+            return response()->json([
+                'status' => 'success',
+                'interview_status' => $interview->status,
+                'data' => QuestionResource::collection($interview->questions)
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
         }
     }
 
