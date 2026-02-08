@@ -94,6 +94,7 @@ Route::get("/students", [StudentController::class, 'fetchStudents']);
 
 Route::post('/students/{student}/compliance-profiles', [StudentComplianceController::class, 'store'])->middleware('auth.jwt');
 Route::get('/compliance-profiles', [StudentComplianceController::class, 'index']);
+Route::get('/profiles', [StudentComplianceController::class, 'fetchCompliance']);
 
 //  Student Documents Upload
 

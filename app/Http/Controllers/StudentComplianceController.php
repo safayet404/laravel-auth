@@ -7,6 +7,8 @@ use App\Models\Student;
 use App\Models\StudentComplianceProfile;
 use Illuminate\Http\Request;
 
+use function PHPSTORM_META\map;
+
 class StudentComplianceController extends Controller
 {
     /**
@@ -19,6 +21,28 @@ class StudentComplianceController extends Controller
             $profiles = StudentComplianceProfile::with('student', 'counselor', 'interviews.questions')->latest()->paginate($peer_page);
 
             return ComplianceResource::collection($profiles);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
+    }
+
+    public function fetchCompliance()
+    {
+        try {
+            $profiles = StudentComplianceProfile::with('student:id,first_name,last_name,email')
+                ->select('id', 'student_id', 'institution')
+                ->get();
+
+            $data = $profiles->map(function ($profile) {
+                return [
+                    'id' => $profile->id,
+                    'student_id' => $profile->student_id,
+                    'name' => $profile->student->first_name .  ' ' . $profile->student->first_name,
+                    'email' => $profile->student->email,
+                    'institution' => $profile->institution,
+                ];
+            });
+            return response()->json(['message' => 'success', 'data'    => $data]);
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
         }
