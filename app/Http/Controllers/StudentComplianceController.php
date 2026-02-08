@@ -19,8 +19,16 @@ class StudentComplianceController extends Controller
         try {
             $peer_page = $request->query('peer_page', 10);
             $profiles = StudentComplianceProfile::with('student', 'counselor', 'interviews.questions')->latest()->paginate($peer_page);
-
-            return ComplianceResource::collection($profiles);
+            $totalCases = StudentComplianceProfile::count();
+            $totalUniqueStudents = StudentComplianceProfile::distinct('student_id')->count('student_id');
+            return ComplianceResource::collection($profiles)->additional([
+                'meta' => [
+                    'statistics' => [
+                        'total_compliance_cases' => $totalCases,
+                        'total_unique_students' => $totalUniqueStudents,
+                    ]
+                ]
+            ]);
         } catch (\Throwable $th) {
             return $this->error($th->getMessage());
         }

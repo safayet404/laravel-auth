@@ -50,9 +50,7 @@ class ComplianceResource extends JsonResource
                             'type' => $question->type,
                             'prep_seconds' => $question->prep_seconds,
                             'answer_seconds' => $question->answer_seconds,
-                            'transcript' => $question->transcript_text, // Note: your data uses transcript_text
-
-                            // Extract from the JSON object
+                            'transcript' => $question->transcript_text,
                             'summary' => $summaryData['concerns'] ?? [],
                             'key_points' => $summaryData['key_points'] ?? [],
                             'consistency' => $summaryData['consistency'] ?? 'N/A',
