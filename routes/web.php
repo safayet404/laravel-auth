@@ -74,6 +74,9 @@ Route::get('/get-roles', [RoleController::class, "fetchAllRoles"]);
 
 
 Route::resource("interview", InterviewController::class);
+
+Route::get("interview-per-user/{student}", [InterviewController::class, 'fetchInterviewPerStudent']);
+
 Route::get('/session/{interviewId}', [InterviewController::class, 'interviewSession']);
 Route::get('/compliance', [InterviewController::class, 'msg']);
 Route::get('/cas', [InterviewController::class, 'cas']);

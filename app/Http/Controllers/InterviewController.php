@@ -232,4 +232,20 @@ class InterviewController extends Controller
             ], 500);
         }
     }
+
+    public function fetchInterviewPerStudent(Student $student)
+    {
+        try {
+            $interviews = Interview::with('complianceProfile:id,institution,program,intake')
+                ->where('student_id', $student->id)->select('id', 'student_id', 'status', 'compliance_profile_id')
+                ->get();
+
+            return response()->json([
+                'message' => 'success',
+                'data' => $interviews
+            ]);
+        } catch (\Throwable $th) {
+            return $this->error($th->getMessage());
+        }
+    }
 }
