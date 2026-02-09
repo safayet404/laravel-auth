@@ -157,6 +157,26 @@ class InterviewController extends Controller
         return $interview->fresh();
     }
 
+    public function done(Request $request, Interview $interview)
+    {
+        // 1. Optional: Check if the user is authorized
+        // if ($request->user()->id !== $interview->student_id) {
+        //     return response()->json(['message' => 'Unauthorized'], 403);
+        // }
+
+        // 2. Perform the update
+        $interview->update([
+            'status' => 'completed',
+            'completed_at' => now(), // Good practice to track WHEN it finished
+        ]);
+
+        // 3. Return a response for your Vue frontend
+        return response()->json([
+            'success' => true,
+            'message' => 'Interview marked as completed',
+            'status' => $interview->status
+        ]);
+    }
     public function recordUpload(Request $request)
     {
         $request->validate([

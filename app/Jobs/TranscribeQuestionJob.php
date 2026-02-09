@@ -28,13 +28,18 @@ class TranscribeQuestionJob implements ShouldQueue
     {
         $q = InterviewQuestion::findOrFail($this->questionId);
 
-        if (!$q->audio_path) throw new \RuntimeException("No audio_path for question {$q->id}");
+        if (!$q->audio_path) {
+            throw new \RuntimeException("No audio_path for question {$q->id}");
+        }
 
         $audioAbs = Storage::disk('public')->path($q->audio_path);
+
+        // Attempt transcription
         $res = $stt->transcribe($audioAbs);
 
+        // Update the record with a fallback string
         $q->update([
-            'transcript_text' => $res['text'] ?? null,
+            'transcript_text' => (!empty($res['text'])) ? $res['text'] : "Audio is not clear",
         ]);
     }
 }

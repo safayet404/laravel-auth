@@ -74,7 +74,6 @@ Route::get('/get-roles', [RoleController::class, "fetchAllRoles"]);
 
 
 Route::resource("interview", InterviewController::class);
-
 Route::get("interview-per-user/{student}", [InterviewController::class, 'fetchInterviewPerStudent']);
 
 Route::get('/session/{interviewId}', [InterviewController::class, 'interviewSession']);
@@ -83,7 +82,7 @@ Route::get('/cas', [InterviewController::class, 'cas']);
 Route::get('/setup', [InterviewController::class, 'setup']);
 Route::get('/questions', [InterviewController::class, 'questions']);
 Route::get('/questions-by-interview/{interview}', [InterviewController::class, 'fetchQuestionByInterview']);
-
+Route::post('/interviews/{interview}/done', [InterviewController::class, 'done']);
 
 // Students
 
